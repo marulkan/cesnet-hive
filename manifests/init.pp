@@ -8,9 +8,13 @@
 # [*frontends*] ([])
 #   Hostnames of frontends.
 #
+# [*realm*] required
+#   Kerberos realm. Use empty string if Kerberos is not used.
+#
 class hive (
   $hdfs_hostname,
   $frontends = [],
+  $realm,
 ) inherits hive::params {
   class { 'hive::install': } ->
   class { 'hive::config': } ~>
