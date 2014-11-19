@@ -30,7 +30,7 @@ class hive::config {
     }
     ->
     exec { 'hive-homedir':
-      command     => 'runuser hdfs -s /bin/bash /bin/bash -c \"hdfs dfs -mkdir /user/hive\"',
+      command     => 'runuser hdfs -s /bin/bash /bin/bash -c "hdfs dfs -mkdir /user/hive"',
       path        => $path,
       environment => $env,
       creates     => $touchfile,
