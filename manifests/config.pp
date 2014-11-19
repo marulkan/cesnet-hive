@@ -33,6 +33,7 @@ class hive::config {
       command     => 'runuser hdfs -s /bin/bash /bin/bash -c "hdfs dfs -mkdir /user/hive"',
       path        => $path,
       environment => $env,
+      unless      => 'runuser hdfs -s /bin/bash /bin/bash -c "hdfs dfs -test -d /user/hive"',
       creates     => $touchfile,
     }
     ->
