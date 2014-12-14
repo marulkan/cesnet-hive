@@ -4,4 +4,5 @@
 #
 class hive::metastore::config {
   contain hive::common::config
+  contain hive::common::daemon
 }
