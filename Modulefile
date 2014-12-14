@@ -8,3 +8,4 @@ description   'Apache Hive Puppet Module'
 project_page  'scientific.zcu.cz'
 
 dependency 'puppetlabs/stdlib'
+dependency 'cesnet/hadoop'

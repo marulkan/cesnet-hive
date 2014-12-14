@@ -1,0 +1,65 @@
+# == Class hive::hdfs
+#
+# Actions necessary to launch on HDFS namenode. Create hive user, if needed. Creates directory structure on HDFS for Hive. It needs to be called after Hadoop HDFS is working (its namenode and proper number of datanodes) and before Hive service startup.
+#
+# This class is needed to be launched on HDFS namenode. With some limitations it can be launched on any Hadoop node (user hive created or hive installed on namenode, kerberos ticket available on the local node).
+#
+class hive::hdfs {
+  # create user/group if needed (we don't need to install hive just for user, unless it is colocated with the namenode)
+  group { 'hive':
+    ensure => present,
+    system => true,
+  }
+  case "${::osfamily}" {
+    'RedHat': {
+      user { 'hive':
+        ensure     => present,
+        system     => true,
+        comment    => 'Apache Hive',
+        gid        => 'hive',
+        home       => '/var/lib/hive',
+        managehome => true,
+        password   => '!!',
+        shell      => '/sbin/nologin',
+      }
+    }
+    'Debian': {
+      user { 'hive':
+        ensure     => present,
+        system     => true,
+        comment    => 'Hive User',
+        gid        => 'hive',
+        home       => '/var/lib/hive',
+        managehome => true,
+        password   => '!!',
+        shell      => '/bin/false',
+      }
+    }
+  }
+  Group['hive'] -> User['hive']
+
+  $touchfile = 'hive-dir-created'
+  hadoop::kinit { 'hive-kinit':
+    touchfile => $touchfile,
+  }
+  ->
+  hadoop::mkdir { '/user/hive':
+    mode      => '0755',
+    owner     => 'hive',
+    group     => 'user',
+    touchfile => $touchfile,
+  }
+  ->
+  hadoop::mkdir { '/user/hive/warehouse':
+    mode      => '0775',
+    owner     => 'hive',
+    group     => 'users',
+    touchfile => $touchfile,
+  }
+  ->
+  hadoop::kdestroy { 'hive-kdestroy':
+    touchfile => $touchfile,
+    touch     => true,
+  }
+}
+

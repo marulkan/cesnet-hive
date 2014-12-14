@@ -2,9 +2,8 @@
 #
 class hive::install {
   include stdlib
+  contain hive::common::postinstall
 
-  # hive on HDFS namenode needed for the directory layout setup script
-  if $hive::hdfs_hostname == $::fqdn or member($hive::frontends, $::fqdn) {
-    ensure_packages($hive::package_name)
-  }
+  ensure_packages($hive::package_name)
+  Package[$hive::package_name] -> Class['hive::common::postinstall']
 }

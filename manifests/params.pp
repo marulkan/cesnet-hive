@@ -15,4 +15,13 @@ class hive::params {
       fail("${::operatingsystem} not supported")
     }
   }
+
+  $alternatives = $::osfamily ? {
+    debian => 'cluster',
+    redhat => undef,
+  }
+  $confdir = $::osfamily ? {
+    debian => '/etc/hive/conf',
+    redhat => '/etc/hive',
+  }
 }
