@@ -50,8 +50,8 @@ class hive::hdfs {
     touchfile => $touchfile,
   }
   ->
-  hadoop::mkdir { '/user/hive/warehouse':
-    mode      => '0775',
+  hadoop::mkdir { $hive::_properties['hive.metastore.warehouse.dir']:
+    mode      => '1775',
     owner     => 'hive',
     group     => 'users',
     touchfile => $touchfile,
