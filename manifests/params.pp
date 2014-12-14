@@ -6,10 +6,20 @@
 class hive::params {
   case $::osfamily {
     'Debian': {
-      $package_name = 'hive'
+      $packages = {
+        common => 'hive',
+        metastore => 'hive-metastore',
+      }
+      $daemons = {
+        metastore => 'hive-metastore',
+      }
     }
     'RedHat': {
-      $package_name = 'hive'
+      $packages = {
+        common => 'hive',
+      }
+      $daemons = {
+      }
     }
     default: {
       fail("${::operatingsystem} not supported")
@@ -24,4 +34,5 @@ class hive::params {
     debian => '/etc/hive/conf',
     redhat => '/etc/hive',
   }
+  $port = 9083
 }
