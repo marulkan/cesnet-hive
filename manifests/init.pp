@@ -2,6 +2,9 @@
 #
 # Apache Hive setup.
 #
+# [*group*] 'users'
+#  Group where all users belong.
+#
 # [*metastore_hostname*] undef
 #  Hostname of the metastore server. When specified, remote mode is activated (recommended).
 #
@@ -23,6 +26,7 @@
 #
 #
 class hive (
+  $group = $hive::params::group,
   $metastore_hostname = undef,
   $realm,
   $properties = undef,

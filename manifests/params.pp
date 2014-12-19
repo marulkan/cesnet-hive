@@ -35,4 +35,5 @@ class hive::params {
     redhat => '/etc/hive',
   }
   $port = 9083
+  $group = 'users'
 }
