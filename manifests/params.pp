@@ -9,9 +9,11 @@ class hive::params {
       $packages = {
         common => 'hive',
         metastore => 'hive-metastore',
+        server => 'hive-server2',
       }
       $daemons = {
         metastore => 'hive-metastore',
+        server => 'hive-server2',
       }
     }
     'RedHat': {

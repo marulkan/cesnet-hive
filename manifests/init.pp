@@ -8,6 +8,12 @@
 # [*metastore_hostname*] undef
 #  Hostname of the metastore server. When specified, remote mode is activated (recommended).
 #
+# [*zookeeper_hostnames*] undef
+#  Array of zookeeper hostnames quorum. Used for lock management (recommended).
+#
+# [*zookeeper_port*] undef
+#  Zookeeper port, if different from the default (2181).
+#
 # [*realm*] undef
 #   Kerberos realm. Use empty string if Kerberos is not used.
 #
@@ -28,6 +34,8 @@
 class hive (
   $group = $hive::params::group,
   $metastore_hostname = undef,
+  $zookeeper_hostnames = undef,
+  $zookeeper_port = undef,
   $realm,
   $properties = undef,
   $descriptions = undef,
@@ -46,6 +54,21 @@ class hive (
     }
   }
 
+  if $zookeeper_hostnames {
+    $zoo_properties1 = {
+      'hive.support.concurrency' => true,
+      'hive.zookeeper.quorum' => join($zookeeper_hostnames, ',')
+    }
+    if $zookeeper_port {
+      $zoo_properties2 = {
+        'hive.zookeeper.client.port' => $zookeeper_port,
+      }
+    }
+    $zoo_properties = merge($zoo_properties1, $zoo_properties2)
+  } else {
+    notify('zookeeper quorum, not specified, recommended for locking')
+  }
+
   if $hive::realm {
     $sec_properties = {
       'hive.metastore.sasl.enabled' => true,
@@ -54,6 +77,11 @@ class hive (
       'hive.metastore.pre.event.listeners' => 'org.apache.hadoop.hive.ql.security.authorization.AuthorizationPreEventListener',
       'hive.security.metastore.authorization.manager' => 'org.apache.hadoop.hive.ql.security.authorization.StorageBasedAuthorizationProvider',
       'hive.security.metastore.authenticator.manager' => 'org.apache.hadoop.hive.ql.security.HadoopDefaultMetastoreAuthenticator',
+      'hive.server2.authentication' => 'kerberos',
+      'hive.server2.authentication.kerberos.principal' => "hive/_HOST@${hive::realm}",
+      'hive.server2.authentication.kerberos.keytab' => '/etc/security/keytab/hive.service.keytab',
+      'hive.server2.enable.impersonation' => true,
+      'hive.server2.thrift.sasl.qop' => 'auth-int',
     }
   }
 
@@ -61,8 +89,10 @@ class hive (
       'hive.metastore.pre.event.listeners' => 'turn on metastore-side authorization security',
       'hive.security.metastore.authorization.manager' => 'recommended is the HDFS permissions-based model: StorageBasedAuthorizationProvider',
       'hive.security.metastore.authenticator.manager' => 'just magic from https://cwiki.apache.org/confluence/display/Hive/Storage+Based+Authorization+in+the+Metastore+Server',
+      'hive.server2.enable.impersonation' => 'execute queries and access HDFS files as the connected user rather than the super user',
+      'hive.server2.thrift.sasl.qop' => 'auth, auth-int, auth-conf',
   }
 
-  $_properties = merge($dyn_properties, $remote_properties, $sec_properties, $properties)
+  $_properties = merge($dyn_properties, $remote_properties, $zoo_properties, $sec_properties, $properties)
   $_descriptions = merge($dyn_descriptions, $descriptions)
 }
