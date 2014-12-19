@@ -7,7 +7,7 @@ class hive::params {
   case $::osfamily {
     'Debian': {
       $packages = {
-        common => 'hive',
+        common => [ 'hive', 'hive-jdbc' ],
         metastore => 'hive-metastore',
         server => 'hive-server2',
       }
