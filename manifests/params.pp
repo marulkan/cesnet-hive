@@ -10,6 +10,7 @@ class hive::params {
         common => [ 'hive', 'hive-jdbc' ],
         metastore => 'hive-metastore',
         server => 'hive-server2',
+        hcatalog => 'hive-hcatalog',
       }
       $daemons = {
         metastore => 'hive-metastore',
@@ -19,6 +20,7 @@ class hive::params {
     'RedHat': {
       $packages = {
         common => 'hive',
+        hcatalog => 'hive-hcatalog',
       }
       $daemons = {
       }
