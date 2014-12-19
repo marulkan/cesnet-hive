@@ -47,10 +47,17 @@ class hive (
       'hive.metastore.sasl.enabled' => true,
       'hive.metastore.kerberos.keytab.file' => '/etc/security/keytab/hive.service.keytab',
       'hive.metastore.kerberos.principal' => "hive/_HOST@${hive::realm}",
+      'hive.metastore.pre.event.listeners' => 'org.apache.hadoop.hive.ql.security.authorization.AuthorizationPreEventListener',
+      'hive.security.metastore.authorization.manager' => 'org.apache.hadoop.hive.ql.security.authorization.StorageBasedAuthorizationProvider',
+      'hive.security.metastore.authenticator.manager' => 'org.apache.hadoop.hive.ql.security.HadoopDefaultMetastoreAuthenticator',
     }
   }
 
-  $dyn_descriptions = {}
+  $dyn_descriptions = {
+      'hive.metastore.pre.event.listeners' => 'turn on metastore-side authorization security',
+      'hive.security.metastore.authorization.manager' => 'recommended is the HDFS permissions-based model: StorageBasedAuthorizationProvider',
+      'hive.security.metastore.authenticator.manager' => 'just magic from https://cwiki.apache.org/confluence/display/Hive/Storage+Based+Authorization+in+the+Metastore+Server',
+  }
 
   $_properties = merge($dyn_properties, $remote_properties, $sec_properties, $properties)
   $_descriptions = merge($dyn_descriptions, $descriptions)
