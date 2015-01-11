@@ -13,4 +13,12 @@ class hive::common::daemon {
       alias => 'hive.service.keytab',
     }
   }
+
+  if $hive::features['manager'] {
+    file { '/usr/local/sbin/hivemanager':
+      mode    => '0755',
+      alias   => 'hivemanager',
+      content => template('hive/hivemanager.erb'),
+    }
+  }
 }

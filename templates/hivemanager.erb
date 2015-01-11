@@ -1,0 +1,39 @@
+<%
+  ms = scope.lookupvar('hive::daemons')['metastore']
+  s2 = scope.lookupvar('hive::daemons')['server']
+-%>
+#! /bin/sh
+
+#
+# Helper script for checking and changing status of all HBAse daemons
+# relevant for this node.
+#
+
+if [ -z "$1" ]; then
+	echo "Usage: $0 start|stop|status|..."
+	echo "       $0 clean"
+	exit 1
+fi
+
+while [ -n "$1" ]; do
+
+	case "$1" in
+	clean)
+		rm -rfv /var/log/hive/* 2>/dev/null || :
+		;;
+	start|restart|*)
+<%if scope.lookupvar('hive::metastore_hostname') == @fqdn -%>		echo "<%= ms -%> $1"; service <%= ms -%> $1
+<%end-%>
+<%if scope.lookupvar('hive::server2_hostname') == @fqdn -%>		echo "<%= s2 -%> $1"; service <%= s2 -%> $1
+<%end-%>
+		;;
+	stop)
+<%if scope.lookupvar('hive::server2_hostname') == @fqdn -%>		echo "<%= s2 -%> $1"; service <%= s2 -%> $1
+<%end-%>
+<%if scope.lookupvar('hive::metastore_hostname') == @fqdn -%>		echo "<%= ms -%> $1"; service <%= ms -%> $1
+<%end-%>
+		;;
+	esac
+
+	shift
+done

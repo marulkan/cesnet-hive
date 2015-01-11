@@ -8,6 +8,9 @@
 # [*metastore_hostname*] undef
 #  Hostname of the metastore server. When specified, remote mode is activated (recommended).
 #
+# [*server2_hostname*] undef
+#  Hostname of the Hive server. Used only for hivemanager script.
+#
 # [*zookeeper_hostnames*] undef
 #  Array of zookeeper hostnames quorum. Used for lock management (recommended).
 #
@@ -29,16 +32,21 @@
 #
 # [*alternatives*] 'cluster' or undef
 #
+# [*features*] ()
+#   Enable additional features:
+#   - manager - script in /usr/local to start/stop Hive daemons relevant for given node
 #
 class hive (
   $group = $hive::params::group,
   $metastore_hostname = undef,
+  $server2_hostname = undef,
   $zookeeper_hostnames = undef,
   $zookeeper_port = undef,
   $realm,
   $properties = undef,
   $descriptions = undef,
   $alternatives = $hive::params::alternatives,
+  $features = undef,
 ) inherits hive::params {
   include stdlib
 
