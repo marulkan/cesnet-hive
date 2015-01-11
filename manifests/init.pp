@@ -18,9 +18,8 @@
 #   Kerberos realm. Use empty string if Kerberos is not used.
 #
 #   When security is enabled, you may also need to add these properties to Hadoop cluster:
-#   - hadoop.proxyuser.hive.users
-#   - hadoop.proxyuser.hive.groups
-#   - hadoop.proxyuser.hive.hosts
+#   - hadoop.proxyuser.hive.groups => 'hadoop,users' (where 'users' is the group in *group* parameter)
+#   - hadoop.proxyuser.hive.hosts => '*'
 #
 # [*properties*] undef
 #   Additional properties.
