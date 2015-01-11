@@ -73,7 +73,7 @@ class hive (
     }
     $zoo_properties = merge($zoo_properties1, $zoo_properties2)
   } else {
-    notify('zookeeper quorum, not specified, recommended for locking')
+    notice('zookeeper quorum, not specified, recommended for locking')
   }
 
   if $hive::realm {

@@ -6,6 +6,6 @@ class hive::hcatalog::config {
   contain hive::common::config
 
   if !$hive::metastore_hostname {
-    notify('metastore_hostname not specified, HCatalog requires Hive Metastore in remote mode')
+    notice('metastore_hostname not specified, HCatalog requires Hive Metastore in remote mode')
   }
 }
