@@ -3,7 +3,7 @@
 # Apache Hive setup.
 #
 # [*group*] 'users'
-#  Group where all users belong.
+#  Group where all users belong. It is not updated when changed, you should remove the /var/lib/hadoop-hdfs/.puppet-hive-dir-created file when changing or update group of /user/hive on HDFS.
 #
 # [*metastore_hostname*] undef
 #  Hostname of the metastore server. When specified, remote mode is activated (recommended).

@@ -46,14 +46,14 @@ class hive::hdfs {
   hadoop::mkdir { '/user/hive':
     mode      => '0755',
     owner     => 'hive',
-    group     => $hive::users,
+    group     => $hive::group,
     touchfile => $touchfile,
   }
   ->
   hadoop::mkdir { $hive::_properties['hive.metastore.warehouse.dir']:
     mode      => '1775',
     owner     => 'hive',
-    group     => $hive::users,
+    group     => $hive::group,
     touchfile => $touchfile,
   }
   ->
