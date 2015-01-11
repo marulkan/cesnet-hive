@@ -16,7 +16,7 @@
 <a name="overview"></a>
 ##Overview
 
-Management of Apache Hive data warehouse software. Puppet 3.x is required. Supported and tested are Fedora (native Hive) and Debian (Cloudera distribution).
+Management of Apache Hive data warehouse software. Puppet 3.x is required. Supported is the Debian (Cloudera distribution).
 
 <a name="module-description"></a>
 ##Module Description
@@ -25,7 +25,7 @@ This module installs and setups Apache Hive data warehouse software running on t
 
 Supported are:
 
-* Fedora 21: native packages (tested on Hive 0.12.0)
+* Fedora 21: only hive and hcatalog clients, native packages (tested on Hive 0.12.0)
 * Debian 7/wheezy: Cloudera distribution (tested on Hive 0.13.1)
 
 <a name="setup"></a>
@@ -37,7 +37,7 @@ Supported are:
 * Packages: installs Hive packages (common packages, subsets for requested services, hcatalog, and/or hive client)
 * Files modified:
  * /etc/hive/\* (or /etc/hive/conf/*)
- * TODO: /usr/local/sbin/hivemanager (not needed, only when administrator manager script is requested by *features*)
+ * /usr/local/sbin/hivemanager (not needed, only when administrator manager script is requested by *features*)
 * Alternatives:
  * alternatives are used for /etc/hive/conf in Cloudera
  * this module switches to the new alternative by default, so the Cloudera original configuration can be kept intact
@@ -56,6 +56,8 @@ There are several known or intended limitations in this module.
 Be aware of:
 
 * **Repositories** - see cesnet-hadoop module Setup Requirements for details
+
+* **no inter-node dependencies**: running HDFS namenode is required for Hive metastore server startup
 
 * **secure mode**: keytabs must be prepared in /etc/security/keytabs/ (see *realm* parameter)
 
@@ -93,6 +95,7 @@ Modify $::fqdn and node(s) section as needed.
 It is recommended:
 
 * using zookeeper and set hive parameter *zookeeper\_hostnames* (cesnet-zookeeper module can be used for installation of zookeeper)
+* if collocated with HDFS namenode, add dependency *Class['hadoop::namenode::service'] -> Class['hive::metastore::service']*
 
 **Example 2**: Setup with security:
 
@@ -139,7 +142,7 @@ Following parameters are used for security (see also hive class):
 <a name="multihome"></a>
 ###Multihome Support
 
-TODO
+Multihome is supported by Hive out-of-the-box.
 
 <a name="reference"></a>
 ##Reference
