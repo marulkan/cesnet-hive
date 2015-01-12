@@ -95,11 +95,11 @@ class hive (
       'hive.metastore.pre.event.listeners' => 'org.apache.hadoop.hive.ql.security.authorization.AuthorizationPreEventListener',
       'hive.security.metastore.authorization.manager' => 'org.apache.hadoop.hive.ql.security.authorization.StorageBasedAuthorizationProvider',
       'hive.security.metastore.authenticator.manager' => 'org.apache.hadoop.hive.ql.security.HadoopDefaultMetastoreAuthenticator',
-      'hive.server2.authentication' => 'kerberos',
+      'hive.server2.authentication' => 'KERBEROS',
       'hive.server2.authentication.kerberos.principal' => "hive/_HOST@${hive::realm}",
       'hive.server2.authentication.kerberos.keytab' => '/etc/security/keytab/hive.service.keytab',
       'hive.server2.enable.impersonation' => true,
-      'hive.server2.thrift.sasl.qop' => 'auth-int',
+      'hive.server2.thrift.sasl.qop' => 'auth',
     }
   }
 
@@ -108,7 +108,7 @@ class hive (
       'hive.security.metastore.authorization.manager' => 'recommended is the HDFS permissions-based model: StorageBasedAuthorizationProvider',
       'hive.security.metastore.authenticator.manager' => 'just magic from https://cwiki.apache.org/confluence/display/Hive/Storage+Based+Authorization+in+the+Metastore+Server',
       'hive.server2.enable.impersonation' => 'execute queries and access HDFS files as the connected user rather than the super user',
-      'hive.server2.thrift.sasl.qop' => 'auth, auth-int, auth-conf',
+      'hive.server2.thrift.sasl.qop' => 'auth, auth-int, auth-conf (only "auth" is working with Kerberos)',
   }
 
   $_properties = merge($dyn_properties, $remote_properties, $zoo_properties, $sec_properties, $properties)
