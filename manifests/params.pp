@@ -11,6 +11,7 @@ class hive::params {
         metastore => 'hive-metastore',
         server => 'hive-server2',
         hcatalog => 'hive-hcatalog',
+        hbase => 'hive-hbase',
       }
       $daemons = {
         metastore => 'hive-metastore',
