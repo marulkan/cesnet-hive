@@ -3,38 +3,49 @@
 # Apache Hive setup.
 #
 # [*group*] 'users'
+#
 #  Group where all users belong. It is not updated when changed, you should remove the /var/lib/hadoop-hdfs/.puppet-hive-dir-created file when changing or update group of /user/hive on HDFS.
 #
 # [*metastore_hostname*] undef
+#
 #  Hostname of the metastore server. When specified, remote mode is activated (recommended).
 #
 # [*server2_hostname*] undef
+#
 #  Hostname of the Hive server. Used only for hivemanager script.
 #
 # [*zookeeper_hostnames*] undef
+#
 #  Array of zookeeper hostnames quorum. Used for lock management (recommended).
 #
 # [*zookeeper_port*] undef
+#
 #  Zookeeper port, if different from the default (2181).
 #
 # [*realm*] undef
+#
 #   Kerberos realm. Use empty string if Kerberos is not used.
 #
 #   When security is enabled, you may also need to add these properties to Hadoop cluster:
-#   - hadoop.proxyuser.hive.groups => 'hadoop,users' (where 'users' is the group in *group* parameter)
-#   - hadoop.proxyuser.hive.hosts => '*'
+#
+#   * hadoop.proxyuser.hive.groups => 'hadoop,users' (where 'users' is the group in *group* parameter)
+#   * hadoop.proxyuser.hive.hosts => '\*'
 #
 # [*properties*] undef
+#
 #   Additional properties.
 #
 # [*descriptions*] undef
+#
 #   Descriptions for the additional properties.
 #
 # [*alternatives*] 'cluster' or undef
 #
 # [*features*] ()
+#
 #   Enable additional features:
-#   - manager - script in /usr/local to start/stop Hive daemons relevant for given node
+#
+#   * manager - script in /usr/local to start/stop Hive daemons relevant for given node
 #
 class hive (
   $group = $hive::params::group,

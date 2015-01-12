@@ -1,5 +1,7 @@
 # == Class hive::frontend
 #
+# Hive client.
+#
 class hive::frontend {
   include 'hive::frontend::install'
   include 'hive::frontend::config'

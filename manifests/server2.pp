@@ -1,5 +1,7 @@
 # == Class hive::server2
 #
+# Hive server2.
+#
 class hive::server2 {
   include 'hive::server2::install'
   include 'hive::server2::config'

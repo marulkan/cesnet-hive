@@ -1,6 +1,6 @@
 # == Class hive::hcatalog
 #
-# Deploy HCatalog. To be used on the frontend.
+# Hive HCatalog Client. To be used on the frontend.
 #
 # It requires Hive metastore in remote mode.
 #

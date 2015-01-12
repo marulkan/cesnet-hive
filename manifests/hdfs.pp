@@ -1,6 +1,6 @@
 # == Class hive::hdfs
 #
-# Actions necessary to launch on HDFS namenode. Create hive user, if needed. Creates directory structure on HDFS for Hive. It needs to be called after Hadoop HDFS is working (its namenode and proper number of datanodes) and before Hive service startup.
+# HDFS initialiations. Actions necessary to launch on HDFS namenode: Create hive user, if needed. Creates directory structure on HDFS for Hive. It needs to be called after Hadoop HDFS is working (its namenode and proper number of datanodes) and before Hive service startup.
 #
 # This class is needed to be launched on HDFS namenode. With some limitations it can be launched on any Hadoop node (user hive created or hive installed on namenode, kerberos ticket available on the local node).
 #
