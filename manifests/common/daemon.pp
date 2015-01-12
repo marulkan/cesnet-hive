@@ -16,6 +16,8 @@ class hive::common::daemon {
 
   if $hive::features['manager'] {
     file { '/usr/local/sbin/hivemanager':
+      owner   => 'root',
+      group   => 'root',
       mode    => '0755',
       alias   => 'hivemanager',
       content => template('hive/hivemanager.erb'),
