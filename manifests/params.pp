@@ -39,6 +39,9 @@ class hive::params {
     debian => '/etc/hive/conf',
     redhat => '/etc/hive',
   }
+  $db_name = 'metastore'
+  $db_user = 'hive'
+  $db_host = 'localhost'
   $port = 9083
   $group = 'users'
 }

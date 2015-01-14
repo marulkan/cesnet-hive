@@ -71,7 +71,9 @@ Let's start with brief examples.
 **Example 1**: The simplest setup without security nor zookeeper, with everything on single machine:
 
     class{"hive":
-      metastore\_hostname => $::fqdn,
+      hdfs_hostname => $::fqdn,
+      metastore_hostname => $::fqdn,
+      server2_hostname => $::fqdn,
       # security needs to be disabled explicitly by using empty string
       realm => '',
     }
@@ -83,7 +85,7 @@ Let's start with brief examples.
       Class['hadoop::namenode'] -> Class['hive::hdfs']
     }
 
-    node $::fqdn {
+    node default {
       # server
       include hive::metastore
       include hive::server2
@@ -120,6 +122,40 @@ Additional permissions in Hadoop cluster are needed: add hive proxy user.
     }
 
 Use nodes sections from **Example 1**, modify $::fqdn and nodes sections as needed.
+
+
+**Example 3**: With MySQL database, using puppetlabs-mysql puppet module.
+
+Add this to the previous examples:
+
+    class{"hive":
+      ...
+      db => 'mysql',
+      db_password => 'hivepassword',
+    }
+
+    node default {
+      ...
+
+      class { 'mysql::server':
+        root_password  => 'strongpassword',
+      }
+    
+      mysql::db { 'metastore':
+        user     => 'hive',
+        password => 'hivepassword',
+        host     => 'localhost',
+        grant    => ['SELECT', 'INSERT', 'UPDATE', 'DELETE'],
+        sql      => '/usr/lib/hive/scripts/metastore/upgrade/mysql/hive-schema-0.13.0.mysql.sql',
+      }
+    
+      class { 'mysql::bindings':
+        java_enable => true,
+      }
+    
+      Mysql::Db['metastore'] -> Class['hive::metastore::service']
+      Class['mysql::bindings'] -> Class['hive::metastore::service']
+    }
 
 
 <a name="usage"></a>
