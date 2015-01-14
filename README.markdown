@@ -154,7 +154,7 @@ Add this to the previous examples:
       }
     
       Mysql::Db['metastore'] -> Class['hive::metastore::service']
-      Class['mysql::bindings'] -> Class['hive::metastore::service']
+      Class['mysql::bindings'] -> Class['hive::metastore::config']
     }
 
 
