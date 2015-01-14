@@ -111,10 +111,10 @@ class hive (
           'hive.metastore.schema.verification' => true,
         }
       }
-      'postgresq': {
+      'postgresql': {
         $db_properties = {
           'javax.jdo.option.ConnectionURL' => "jdbc:postgresql://${db_host}/${db_name}",
-          'javax.jdo.option.ConnectionDriverName' => 'com.postgresql.jdbc.Driver',
+          'javax.jdo.option.ConnectionDriverName' => 'org.postgresql.Driver',
           'javax.jdo.option.ConnectionUserName' => $db_user,
           'javax.jdo.option.ConnectionPassword' => $db_password,
           'datanucleus.autoCreateSchema' => false,
