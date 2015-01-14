@@ -62,8 +62,10 @@ class hive (
   include stdlib
 
   $dyn_properties = {
-    'hive.metastore.warehouse.dir' => '/user/hive/warehouse',
+    'javax.jdo.option.ConnectionURL' => 'jdbc:derby:;databaseName=/var/lib/hive/metastore/metastore_db;create=true',
+    'javax.jdo.option.ConnectionDriverName' => 'org.apache.derby.jdbc.EmbeddedDriver',
     'datanucleus.autoStartMechanism' => 'SchemaTable',
+    'hive.metastore.warehouse.dir' => '/user/hive/warehouse',
   }
 
   if $hive::metastore_hostname {
@@ -104,6 +106,8 @@ class hive (
   }
 
   $dyn_descriptions = {
+      'javax.jdo.option.ConnectionURL' => 'JDBC connect string for a JDBC metastore',
+      'javax.jdo.option.ConnectionDriverName' => 'Driver class name for a JDBC metastore',
       'hive.metastore.pre.event.listeners' => 'turn on metastore-side authorization security',
       'hive.security.metastore.authorization.manager' => 'recommended is the HDFS permissions-based model: StorageBasedAuthorizationProvider',
       'hive.security.metastore.authenticator.manager' => 'just magic from https://cwiki.apache.org/confluence/display/Hive/Storage+Based+Authorization+in+the+Metastore+Server',
