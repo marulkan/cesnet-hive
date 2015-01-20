@@ -4,9 +4,9 @@
   "author": "František Dvořák <valtri@civ.zcu.cz>",
   "summary": "Apache Hive Puppet Module",
   "license": "MIT",
-  "source": "http://scientific.zcu.cz/git/cesnet-hive.git",
+  "source": "https://github.com/MetaCenterCloudPuppet/cesnet-hive",
   "project_page": "https://github.com/MetaCenterCloudPuppet",
-  "issues_url": "mailto://valtri@civ.zcu.cz",
+  "issues_url": "https://github.com/MetaCenterCloudPuppet/cesnet-hive/issues",
   "tags": ["hadoop", "hive"],
   "operatingsystem_support": [
     {
