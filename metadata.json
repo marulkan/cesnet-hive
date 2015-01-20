@@ -16,11 +16,11 @@
   ],
   "dependencies": [
     {
-      "name": "puppetlabs-stdlib",
+      "name": "puppetlabs/stdlib",
       "version_requirement": ">= 1.0.0"
     },
     {
-      "name": "cesnet-hadoop",
+      "name": "cesnet/hadoop",
       "version_requirement": ">= 0.0.0"
     }
   ]
