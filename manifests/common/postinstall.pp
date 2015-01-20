@@ -5,10 +5,6 @@
 class hive::common::postinstall {
   $confname = $hive::alternatives
   $path = '/sbin:/usr/sbin:/bin:/usr/bin'
-  $altcmd = $::osfamily ? {
-    debian => 'update-alternatives',
-    redhat => 'alternatives',
-  }
 
   if $confname {
     exec { 'hive-copy-config':
@@ -17,18 +13,14 @@ class hive::common::postinstall {
       creates => "/etc/hive/conf.${confname}",
     }
     ->
-    exec { 'hive-install-alternatives':
-      command     => "${altcmd} --install /etc/hive/conf hive-conf /etc/hive/conf.${confname} 50",
-      path        => $path,
-      refreshonly => true,
-      subscribe   => Exec['hive-copy-config'],
+    alternative_entry{"/etc/hive/conf.${confname}":
+      altlink  => '/etc/hive/conf',
+      altname  => 'hive-conf',
+      priority => 50,
     }
     ->
-    exec { 'hive-set-alternatives':
-      command     => "${altcmd} --set hive-conf /etc/hive/conf.${confname}",
-      path        => $path,
-      refreshonly => true,
-      subscribe   => Exec['hive-copy-config'],
+    alternatives{'hive-conf':
+      path => "/etc/hive/conf.${confname}",
     }
   }
 }
