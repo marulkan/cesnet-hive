@@ -2,48 +2,50 @@
 #
 # Apache Hive setup.
 #
-# [*group*] 'users'
+# ####`group` 'users'
 #
-#  Group where all users belong. It is not updated when changed, you should remove the /var/lib/hadoop-hdfs/.puppet-hive-dir-created file when changing or update group of /user/hive on HDFS.
+# Group where all users belong. It is not updated when changed, you should remove the /var/lib/hadoop-hdfs/.puppet-hive-dir-created file when changing or update group of /user/hive on HDFS.
 #
-# [*metastore_hostname*] undef
+# ####`metastore_hostname` undef
 #
-#  Hostname of the metastore server. When specified, remote mode is activated (recommended).
+# Hostname of the metastore server. When specified, remote mode is activated (recommended).
 #
-# [*server2_hostname*] undef
+# ####`server2_hostname` undef
 #
-#  Hostname of the Hive server. Used only for hivemanager script.
+# Hostname of the Hive server. Used only for hivemanager script.
 #
-# [*zookeeper_hostnames*] undef
+# ####`zookeeper_hostnames` undef
 #
-#  Array of zookeeper hostnames quorum. Used for lock management (recommended).
+# Array of zookeeper hostnames quorum. Used for lock management (recommended).
 #
-# [*zookeeper_port*] undef
+# ####`zookeeper_port` undef
 #
-#  Zookeeper port, if different from the default (2181).
+# Zookeeper port, if different from the default (2181).
 #
-# [*realm*] undef
+# ###`realm` undef
 #
-#   Kerberos realm. Use empty string if Kerberos is not used.
+# Kerberos realm. Use empty string if Kerberos is not used.
 #
-#   When security is enabled, you may also need to add these properties to Hadoop cluster:
+# When security is enabled, you may also need to add these properties to Hadoop cluster:
 #
-#   * hadoop.proxyuser.hive.groups => 'hadoop,users' (where 'users' is the group in *group* parameter)
-#   * hadoop.proxyuser.hive.hosts => '\*'
+# * hadoop.proxyuser.hive.groups => 'hadoop,users' (where 'users' is the group in *group* parameter)
+# * hadoop.proxyuser.hive.hosts => '\*'
 #
-# [*properties*] undef
+# ####`properties` undef
 #
-#   Additional properties.
+# Additional properties.
 #
-# [*descriptions*] undef
+# ####`descriptions` undef
 #
-#   Descriptions for the additional properties.
+# Descriptions for the additional properties.
 #
-# [*alternatives*] 'cluster' or undef
+# ####`alternatives` 'cluster' or undef
 #
-# [*db*] undef
+# Use alternatives to switch configuration. Use it only when supported (like with Cloudera for example).
 #
-#   Database behind the metastore. The default is embeded database (*derby*), but it is recommended to use proper database.
+# ####`db` undef
+#
+# Database behind the metastore. The default is embeded database (*derby*), but it is recommended to use proper database.
 #
 # Values:
 #
@@ -51,27 +53,27 @@
 # * *mysql*: MySQL/MariaDB,
 # * *postgresql*: PostgreSQL
 #
-# [*db_host*]: 'localhost'
+# ####`db_host`: 'localhost'
 #
 # Database hostname for *mysql*, *postgresql*, and *oracle*'. Can be overriden by *javax.jdo.option.ConnectionURL* property.
 #
-# [*db_name*]: 'metastore'
+# ####`db_name`: 'metastore'
 #
-#   Database name for *mysql* and *postgresql*. For *oracle* 'xe' schema is used. Can be overriden by *javax.jdo.option.ConnectionURL* property.
+# Database name for *mysql* and *postgresql*. For *oracle* 'xe' schema is used. Can be overriden by *javax.jdo.option.ConnectionURL* property.
 #
-# [*db_user*]: 'hive'
+# ####`db_user`: 'hive'
 #
-#   Database user for *mysql*, *postgresql*, and *oracle*.
+# Database user for *mysql*, *postgresql*, and *oracle*.
 #
-# [*db_password*]: undef
+# ####`db_password`: undef
 #
-#   Database password for *mysql*, *postgresql*, and *oracle*.
+# Database password for *mysql*, *postgresql*, and *oracle*.
 #
-# [*features*] ()
+# ####`features` ()
 #
-#   Enable additional features:
+# Enable additional features:
 #
-#   * manager - script in /usr/local to start/stop Hive daemons relevant for given node
+# * manager - script in /usr/local to start/stop Hive daemons relevant for given node
 #
 class hive (
   $group = $hive::params::group,
