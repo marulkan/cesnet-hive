@@ -10,7 +10,7 @@ class hive::hdfs {
     ensure => present,
     system => true,
   }
-  case "${::osfamily}" {
+  case $::osfamily {
     'RedHat': {
       user { 'hive':
         ensure     => present,
@@ -34,6 +34,9 @@ class hive::hdfs {
         password   => '!!',
         shell      => '/bin/false',
       }
+    }
+    default: {
+      notice("${::osfamily} not supported")
     }
   }
   Group['hive'] -> User['hive']
