@@ -84,7 +84,6 @@ Let's start with brief examples.
       # HDFS initialization must be done on the namenode
       # (or /user/hive on HDFS must be created)
       include hive::hdfs
-      Class['hadoop::namenode::service'] -> Class['hive::hdfs']
     }
 
     node default {
