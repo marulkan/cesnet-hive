@@ -126,7 +126,7 @@ Additional permissions in Hadoop cluster are needed: add hive proxy user.
 
     class{"hive":
       group => 'users',
-      metastore\_hostname => $::fqdn,
+      metastore_hostname => $::fqdn,
       realm => 'MY.REALM',
     }
 
