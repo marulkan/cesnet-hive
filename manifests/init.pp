@@ -141,7 +141,7 @@ class hive (
 
   $dyn_properties = {
     'datanucleus.autoStartMechanism' => 'SchemaTable',
-    'hive.metastore.warehouse.dir' => 'hdfs://${hive::hdfs_hostname}/user/hive/warehouse',
+    'hive.metastore.warehouse.dir' => "hdfs://${hive::hdfs_hostname}/user/hive/warehouse",
   }
 
   if $hive::metastore_hostname {
