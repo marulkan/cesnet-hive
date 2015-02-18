@@ -81,6 +81,7 @@ class hive (
   $server2_hostname = undef,
   $zookeeper_hostnames = undef,
   $zookeeper_port = undef,
+  $hdfs_hostname = undef,
   $realm,
   $properties = undef,
   $descriptions = undef,
@@ -140,7 +141,7 @@ class hive (
 
   $dyn_properties = {
     'datanucleus.autoStartMechanism' => 'SchemaTable',
-    'hive.metastore.warehouse.dir' => '/user/hive/warehouse',
+    'hive.metastore.warehouse.dir' => 'hdfs://${hive::hdfs_hostname}/user/hive/warehouse',
   }
 
   if $hive::metastore_hostname {

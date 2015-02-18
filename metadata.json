@@ -1,6 +1,6 @@
 {
   "name": "cesnet-hive",
-  "version": "0.9.4",
+  "version": "0.9.5",
   "author": "Frantisek Dvorak <valtri@civ.zcu.cz>",
   "summary": "Apache Hive Puppet Module",
   "license": "MIT",
@@ -12,6 +12,10 @@
     {
     "operatingsystem": "Debian",
     "operatingsystemrelease": ["7"]
+    },
+    {
+    "operatingsystem": "Ubuntu",
+    "operatingsystemrelease": ["14.04"]
     }
   ],
   "requirements": [
