@@ -6,6 +6,10 @@
 #
 # Group where all users belong. It is not updated when changed, you should remove the /var/lib/hadoop-hdfs/.puppet-hive-dir-created file when changing or update group of /user/hive on HDFS.
 #
+# ####`hdfs_hostname` undef
+#
+# HDFS hostname (or defaultFS value), if different from core-site.xml Hadoop file. It is recommended to have the *core-site.xml* file instead. *core-site.xml* will be created when installing any Hadoop component or if you include *hadoop::common::config* class.
+#
 # ####`metastore_hostname` undef
 #
 # Hostname of the metastore server. When specified, remote mode is activated (recommended).
@@ -77,11 +81,11 @@
 #
 class hive (
   $group = $hive::params::group,
+  $hdfs_hostname = undef,
   $metastore_hostname = undef,
   $server2_hostname = undef,
   $zookeeper_hostnames = undef,
   $zookeeper_port = undef,
-  $hdfs_hostname = undef,
   $realm,
   $properties = undef,
   $descriptions = undef,
@@ -139,9 +143,12 @@ class hive (
     }
   }
 
+  if $hdfs_hostname {
+    $metastore_uri = "hdfs://${hive::hdfs_hostname}"
+  }
   $dyn_properties = {
     'datanucleus.autoStartMechanism' => 'SchemaTable',
-    'hive.metastore.warehouse.dir' => "hdfs://${hive::hdfs_hostname}/user/hive/warehouse",
+    'hive.metastore.warehouse.dir' => "${metastore_uri}/user/hive/warehouse",
   }
 
   if $hive::metastore_hostname {

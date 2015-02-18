@@ -65,6 +65,8 @@ Be aware of:
 
 * **Database setup not handled here**: basic database setup and database creation needs to be handled externally; tested are puppetlabs-mysql ad puppetlabs-postgresql modules (see examples), but it is not limited to these modules
 
+* **Hadoop**: it should be configured locally or you should use *hdfs\_hostname* parameter (see [Module Parameters](#parameters))
+
 <a name="beginning-with-hive"></a>
 ###Beginning with Hive
 
@@ -269,6 +271,10 @@ Multihome is supported by Hive out-of-the-box.
 ####`group` 'users'
 
 Group where all users belong. It is not updated when changed, you should remove the /var/lib/hadoop-hdfs/.puppet-hive-dir-created file when changing or update group of /user/hive on HDFS.
+
+####`hdfs_hostname` undef
+
+HDFS hostname (or defaultFS value), if different from core-site.xml Hadoop file. It is recommended to have the *core-site.xml* file instead. *core-site.xml* will be created when installing any Hadoop component or if you include *hadoop::common::config* class.
 
 ####`metastore_hostname` undef
 
