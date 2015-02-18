@@ -1,5 +1,5 @@
 name 'cesnet-hive'
-version '0.9.4'
+version '0.9.5'
 source 'https://github.com/MetaCenterCloudPuppet/cesnet-hive'
 author 'Frantisek Dvorak <valtri@civ.zcu.cz>'
 license 'MIT'
