@@ -73,7 +73,7 @@
 #
 # Database password for *mysql*, *postgresql*, and *oracle*.
 #
-# ####`features` ()
+# ####`features` {}
 #
 # Enable additional features:
 #
@@ -95,7 +95,7 @@ class hive (
   $db_user = $hive::params::db_user,
   $db_name = $hive::params::db_name,
   $db_password = undef,
-  $features = undef,
+  $features = {},
 ) inherits hive::params {
   include stdlib
 

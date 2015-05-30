@@ -339,7 +339,7 @@ Database user for *mysql*, *postgresql*, and *oracle*.
 
 Database password for *mysql*, *postgresql*, and *oracle*.
 
-####`features` ()
+####`features` {}
 
 Enable additional features:
 
