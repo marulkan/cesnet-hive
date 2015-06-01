@@ -19,15 +19,25 @@
 
 <configuration>
 
-<% hive_properties = scope.lookupvar('hive::_properties').select { |name,value| value != '::undef' } -%>
-<% hive_properties.keys.each do |p| -%>
-<%if scope.lookupvar('hive::_descriptions')[p] -%>
+<% hive_properties = scope.lookupvar('hive::_properties') -%>
+<%# sort the properties list for ruby <= 1.8 #-%>
+<% rv=RUBY_VERSION.split('.') -%>
+<% if rv[0] <= '1' and rv[1] <= '8' -%>
+<% hive_properties_keys = hive_properties.keys.sort -%>
+<% else -%>
+<% hive_properties_keys = hive_properties.keys -%>
+<% end -%>
+<% hive_properties_keys.each do |p| -%>
+<% value = hive_properties[p] -%>
+<% if value != '::undef' -%>
+<% if scope.lookupvar('hive::_descriptions')[p] -%>
   <!-- <%= scope.lookupvar('hive::_descriptions')[p] -%> -->
 <% end -%>
   <property>
     <name><%= p -%></name>
-    <value><%= hive_properties[p] -%></value>
+    <value><%= value -%></value>
   </property>
 
+<% end -%>
 <% end -%>
 </configuration>
