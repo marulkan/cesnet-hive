@@ -4,8 +4,16 @@
 # It sets variables according to platform
 #
 class hive::params {
-  case "${::osfamily}/${::operatingsystem}" {
-    'Debian/Debian', 'Debian/Ubuntu', 'RedHat/CentOS', 'RedHat/RedHat', 'RedHat/Scientific': {
+  case "${::osfamily}-${::operatingsystem}" {
+    /RedHat-Fedora/: {
+      $packages = {
+        common => 'hive',
+        hcatalog => 'hive-hcatalog',
+      }
+      $daemons = {
+      }
+    }
+    /Debian|RedHat/: {
       $packages = {
         common => [ 'hive', 'hive-jdbc' ],
         metastore => 'hive-metastore',
@@ -16,14 +24,6 @@ class hive::params {
       $daemons = {
         metastore => 'hive-metastore',
         server => 'hive-server2',
-      }
-    }
-    'RedHat/Fedora': {
-      $packages = {
-        common => 'hive',
-        hcatalog => 'hive-hcatalog',
-      }
-      $daemons = {
       }
     }
     default: {

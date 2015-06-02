@@ -10,8 +10,8 @@ class hive::hdfs {
     ensure => present,
     system => true,
   }
-  case "${::osfamily}/${::operatingsystem}" {
-    'RedHat/Fedora': {
+  case "${::osfamily}-${::operatingsystem}" {
+    /RedHat-Fedora/: {
       user { 'hive':
         ensure     => present,
         system     => true,
@@ -23,7 +23,7 @@ class hive::hdfs {
         shell      => '/sbin/nologin',
       }
     }
-    'Debian/Debian', 'Debian/Ubuntu', 'RedHat/CentOS', 'RedHat/RedHat', 'RedHat/Scientific': {
+    /Debian|RedHat/: {
       user { 'hive':
         ensure     => present,
         system     => true,
