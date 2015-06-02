@@ -29,6 +29,7 @@ Supported are:
 
 * Fedora 21: only hive and hcatalog clients, native packages (tested on Hive 0.12.0)
 * Debian 7/wheezy: Cloudera distribution (tested on Hive 0.13.1)
+* RHEL 6, CentOS 6, Scientific Linux 6: Cloudera distribution (tested with Hadoop 2.6.0)
 
 <a name="setup"></a>
 ##Setup

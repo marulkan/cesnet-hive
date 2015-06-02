@@ -4,8 +4,8 @@
 # It sets variables according to platform
 #
 class hive::params {
-  case $::osfamily {
-    'Debian': {
+  case "${::osfamily}/${::operatingsystem}" {
+    'Debian/Debian', 'Debian/Ubuntu', 'RedHat/CentOS', 'RedHat/RedHat', 'RedHat/Scientific': {
       $packages = {
         common => [ 'hive', 'hive-jdbc' ],
         metastore => 'hive-metastore',
@@ -18,7 +18,7 @@ class hive::params {
         server => 'hive-server2',
       }
     }
-    'RedHat': {
+    'RedHat/Fedora': {
       $packages = {
         common => 'hive',
         hcatalog => 'hive-hcatalog',
@@ -31,13 +31,16 @@ class hive::params {
     }
   }
 
-  $alternatives = $::osfamily ? {
-    debian => 'cluster',
-    redhat => undef,
+  $alternatives = "${::osfamily}-${::operatingsystem}" ? {
+    /Fedora-RedHat/ => undef,
+    # let's disable alternatives for now:
+    # https://github.com/puppet-community/puppet-alternatives/issues/18
+    /RedHat/        => undef,
+    /Debian/        => 'cluster',
   }
-  $confdir = $::osfamily ? {
-    debian => '/etc/hive/conf',
-    redhat => '/etc/hive',
+  $confdir = "${::osfamily}-${::operatingsystem}" ? {
+    /Fedora-RedHat/ => '/etc/hive',
+    /Debian|RedHat/ => '/etc/hive/conf',
   }
   $db_name = 'metastore'
   $db_user = 'hive'

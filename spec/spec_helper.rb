@@ -10,10 +10,20 @@ $test_os=[{
     'osfamily' => 'Debian',
     'operatingsystem' => 'Ubuntu',
     'operatingsystemrelease' => ['14.04']
+  }, {
+    'osfamily' => 'RedHat',
+    'operatingsystem' => 'CentOS',
+    'operatingsystemrelease' => ['6']
+  }, {
+    'osfamily' => 'RedHat',
+    'operatingsystem' => 'RedHat',
+    'operatingsystemrelease' => ['6']
   }]
 
 $test_config_dir={
+  'CentOS' => '/etc/hive/conf',
   'Debian' => '/etc/hive/conf',
   'Fedora' => '/etc/hive',
+  'RedHat' => '/etc/hive/conf',
   'Ubuntu' => '/etc/hive/conf',
 }
