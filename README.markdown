@@ -9,6 +9,7 @@
 4. [Usage - Configuration options and additional functionality](#usage)
     * [Enable Security](#security)
     * [Multihome Support](#multihome)
+    * [Upgrade](#upgrade)
 5. [Reference - An under-the-hood peek at what the module is doing and how](#reference)
     * [Classes](#classes)
     * [Module Parameters](#parameters)
@@ -235,6 +236,30 @@ Following parameters are used for security (see also hive class):
 ###Multihome Support
 
 Multihome is supported by Hive out-of-the-box.
+
+<a name="upgrade"></a>
+###Upgrade
+
+The best way is to refresh configrations from the new original (=remove the old) and relaunch puppet on top of it. There is also needed to update schema using *schematool* or upgrade scripts in */usr/lib/hive/scripts/metastore/upgrade/DATABASE/*.
+
+For example (using mysql, from Hive 0.13.0):
+
+    alternative='cluster'
+    d='hive'
+    mv /etc/{d}$/conf.${alternative} /etc/${d}/conf.cdhXXX
+    update-alternatives --auto ${d}-conf
+
+    # upgrade
+    ...
+
+    # metadata schema upgrade
+    mysqldump --opt metastore > metastore-backup.sql
+    mysqldump --skip-add-drop-table --no-data metastore > my-schema-backup.mysql.sql
+    /usr/lib/hive/bin/schematool -dbType mysql -upgradeSchemaFrom 0.13.0 -userName root -passWord MYSQL_ROOT_PASSWORD
+
+    puppet agent --test
+    #or: puppet apply ...
+
 
 <a name="reference"></a>
 ##Reference
