@@ -1,3 +1,7 @@
+## Apache Hive Puppet Module
+
+[![Build Status](https://travis-ci.org/MetaCenterCloudPuppet/cesnet-hive.svg?branch=master)](https://travis-ci.org/MetaCenterCloudPuppet/cesnet-hive)
+
 ####Table of Contents
 
 1. [Overview](#overview)
