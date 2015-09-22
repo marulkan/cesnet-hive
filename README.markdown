@@ -13,6 +13,7 @@
 4. [Usage - Configuration options and additional functionality](#usage)
     * [Enable Security](#security)
     * [Multihome Support](#multihome)
+    * [Cluster with more HDFS Name nodes](#multinn)
     * [Upgrade](#upgrade)
 5. [Reference - An under-the-hood peek at what the module is doing and how](#reference)
     * [Classes](#classes)
@@ -88,7 +89,7 @@ Let's start with brief examples.
       realm => '',
     }
 
-    node <HDFS_NODEMANAGER> {
+    node <HDFS_NAMENODE> {
       # HDFS initialization must be done on the namenode
       # (or /user/hive on HDFS must be created)
       include hive::hdfs
@@ -105,7 +106,7 @@ Let's start with brief examples.
 
 Modify *$::fqdn* and node(s) section as needed.
 
-It is recommended:
+We recommend:
 
 * using zookeeper and set hive parameter *zookeeper\_hostnames* (cesnet-zookeeper module can be used for installation of zookeeper)
 * if collocated with HDFS namenode, add dependency *Class['hadoop::namenode::service'] -> Class['hive::metastore::service']*
@@ -241,6 +242,24 @@ Following parameters are used for security (see also hive class):
 
 Multihome is supported by Hive out-of-the-box.
 
+<a name="multinn"></a>
+###Cluster with more HDFS Name nodes
+
+If there are used more HDFS namenodes in the Hadoop cluster (high availability, namespaces, ...), it is needed to have 'hive' system user on all of them to autorization work properly. You could install full Hive client (using *hive::frontend::install*), but just creating the user is enough (using *hive::user*).
+
+Note, the *hive::hdfs* class must be used too, but only on one of the HDFS namenodes. It includes the *hive::user*.
+
+**Example**:
+
+    node <HDFS_NAMENODE> {
+      include hive::hdfs
+    }
+
+    node <HDFS_OTHER_NAMENODE> {
+      include hive::user
+    }
+
+
 <a name="upgrade"></a>
 ###Upgrade
 
@@ -294,6 +313,7 @@ For example (using mysql, from Hive 0.13.0):
  * config
  * install
  * service
+* user
 
 <a name="parameters"></a>
 ###Module Parameters

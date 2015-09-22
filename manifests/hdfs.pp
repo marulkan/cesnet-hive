@@ -5,41 +5,7 @@
 # This class is needed to be launched on HDFS namenode. With some limitations it can be launched on any Hadoop node (user hive created or hive installed on namenode, kerberos ticket available on the local node).
 #
 class hive::hdfs {
-  # create user/group if needed (we don't need to install hive just for user, unless it is colocated with the namenode)
-  group { 'hive':
-    ensure => present,
-    system => true,
-  }
-  case "${::osfamily}-${::operatingsystem}" {
-    /RedHat-Fedora/: {
-      user { 'hive':
-        ensure     => present,
-        system     => true,
-        comment    => 'Apache Hive',
-        gid        => 'hive',
-        home       => '/var/lib/hive',
-        managehome => true,
-        password   => '!!',
-        shell      => '/sbin/nologin',
-      }
-    }
-    /Debian|RedHat/: {
-      user { 'hive':
-        ensure     => present,
-        system     => true,
-        comment    => 'Hive User',
-        gid        => 'hive',
-        home       => '/var/lib/hive',
-        managehome => true,
-        password   => '!!',
-        shell      => '/bin/false',
-      }
-    }
-    default: {
-      notice("${::osfamily} not supported")
-    }
-  }
-  Group['hive'] -> User['hive']
+  include hive::user
 
   $touchfile = 'hive-dir-created'
   hadoop::kinit { 'hive-kinit':
