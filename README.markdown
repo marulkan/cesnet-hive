@@ -23,12 +23,12 @@
 <a name="overview"></a>
 ##Overview
 
-Management of Apache Hive data warehouse software. Puppet 3.x is required. Supported is the Debian (Cloudera distribution).
+Management of Apache Hive data warehouse software. Puppet 3.x is required.
 
 <a name="module-description"></a>
 ##Module Description
 
-This module installs and setups Apache Hive data warehouse software running on the top of Hadoop cluster. Hive services can be collocated or separated across the hosts in the cluster. Optionally security based on Kerberos can be enabled. Security should be enabled if Hadoop cluster security is enabled.
+This module installs and setups Apache Hive data warehouse software running on the top of Hadoop cluster. Hive services can be collocated or separated in the cluster. Optionally security based on Kerberos can be enabled. Security should be enabled if Hadoop cluster security is enabled.
 
 Supported are:
 
@@ -69,7 +69,7 @@ Be aware of:
 
 * **Secure mode**: keytabs must be prepared in /etc/security/keytabs/ (see *realm* parameter)
 
-* **Database setup not handled here**: basic database setup and database creation needs to be handled externally; tested are puppetlabs-mysql ad puppetlabs-postgresql modules (see examples), but it is not limited to these modules
+* **Database setup not handled here**: basic database setup and database creation needs to be handled externally; tested are puppetlabs-mysql and puppetlabs-postgresql modules (see examples), but it is not limited to these modules
 
 * **Hadoop**: it should be configured locally or you should use *hdfs\_hostname* parameter (see [Module Parameters](#parameters))
 
@@ -217,7 +217,7 @@ Add this to the initial example:
       Exec['metastore-import'] -> Class['hive::metastore::service']
     }
 
-Like with MySQL, between *hive::metastore::install* and *hive::metastore::service* is included creation of the metastore database, now PostgreSQL. The raeson is the required schema SQL file goes from Hive packages, and the database is then needed for running Hive metastore.
+Like with MySQL, between *hive::metastore::install* and *hive::metastore::service* is included creation of the metastore database, now PostgreSQL. The reason is the required schema SQL file goes from Hive packages, and the database is then needed for running Hive metastore.
 
 The JDBC jar-file is also needed for metastore.
 
@@ -322,7 +322,7 @@ Array of zookeeper hostnames quorum. Used for lock management (recommended).
 
 Zookeeper port, if different from the default (2181).
 
-###`realm` undef
+####`realm` undef
 
 Kerberos realm. Use empty string if Kerberos is not used.
 
@@ -353,19 +353,19 @@ Values:
 * *mysql*: MySQL/MariaDB,
 * *postgresql*: PostgreSQL
 
-####`db_host`: 'localhost'
+####`db_host` 'localhost'
 
 Database hostname for *mysql*, *postgresql*, and *oracle*'. Can be overriden by *javax.jdo.option.ConnectionURL* property.
 
-####`db_name`: 'metastore'
+####`db_name` 'metastore'
 
 Database name for *mysql* and *postgresql*. For *oracle* 'xe' schema is used. Can be overriden by *javax.jdo.option.ConnectionURL* property.
 
-####`db_user`: 'hive'
+####`db_user` 'hive'
 
 Database user for *mysql*, *postgresql*, and *oracle*.
 
-####`db_password`: undef
+####`db_password` undef
 
 Database password for *mysql*, *postgresql*, and *oracle*.
 

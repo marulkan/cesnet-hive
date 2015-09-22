@@ -26,7 +26,7 @@
 #
 # Zookeeper port, if different from the default (2181).
 #
-# ###`realm` undef
+# ####`realm` undef
 #
 # Kerberos realm. Use empty string if Kerberos is not used.
 #
@@ -57,19 +57,19 @@
 # * *mysql*: MySQL/MariaDB,
 # * *postgresql*: PostgreSQL
 #
-# ####`db_host`: 'localhost'
+# ####`db_host` 'localhost'
 #
 # Database hostname for *mysql*, *postgresql*, and *oracle*'. Can be overriden by *javax.jdo.option.ConnectionURL* property.
 #
-# ####`db_name`: 'metastore'
+# ####`db_name` 'metastore'
 #
 # Database name for *mysql* and *postgresql*. For *oracle* 'xe' schema is used. Can be overriden by *javax.jdo.option.ConnectionURL* property.
 #
-# ####`db_user`: 'hive'
+# ####`db_user` 'hive'
 #
 # Database user for *mysql*, *postgresql*, and *oracle*.
 #
-# ####`db_password`: undef
+# ####`db_password` undef
 #
 # Database password for *mysql*, *postgresql*, and *oracle*.
 #
