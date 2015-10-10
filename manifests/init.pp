@@ -148,6 +148,8 @@ class hive (
   }
   $dyn_properties = {
     'datanucleus.autoStartMechanism' => 'SchemaTable',
+    # recommended value from Cloudera with Impala (default is 600)
+    'hive.metastore.client.socket.timeout' => 3600,
     'hive.metastore.warehouse.dir' => "${metastore_uri}/user/hive/warehouse",
   }
 
