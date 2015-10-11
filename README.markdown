@@ -4,27 +4,21 @@
 
 ####Table of Contents
 
-1. [Overview](#overview)
-2. [Module Description - What the module does and why it is useful](#module-description)
-3. [Setup - The basics of getting started with Hive](#setup)
+1. [Module Description - What the module does and why it is useful](#module-description)
+2. [Setup - The basics of getting started with Hive](#setup)
     * [What cesnet-hive module affects](#what-hive-affects)
     * [Setup requirements](#setup-requirements)
     * [Beginning with hive](#beginning-with-hive)
-4. [Usage - Configuration options and additional functionality](#usage)
+3. [Usage - Configuration options and additional functionality](#usage)
     * [Enable Security](#security)
     * [Multihome Support](#multihome)
     * [Cluster with more HDFS Name nodes](#multinn)
     * [Upgrade](#upgrade)
-5. [Reference - An under-the-hood peek at what the module is doing and how](#reference)
+4. [Reference - An under-the-hood peek at what the module is doing and how](#reference)
     * [Classes](#classes)
-    * [Module Parameters](#parameters)
-6. [Limitations - OS compatibility, etc.](#limitations)
-7. [Development - Guide for contributing to the module](#development)
-
-<a name="overview"></a>
-##Overview
-
-Management of Apache Hive data warehouse software. Puppet 3.x is required.
+    * [Module Parameters (hive class)](#class-hive)
+5. [Limitations - OS compatibility, etc.](#limitations)
+6. [Development - Guide for contributing to the module](#development)
 
 <a name="module-description"></a>
 ##Module Description
@@ -33,9 +27,11 @@ This module installs and setups Apache Hive data warehouse software running on t
 
 Supported are:
 
-* Fedora 21: only hive and hcatalog clients, native packages (tested on Hive 0.12.0)
-* Debian 7/wheezy: Cloudera distribution (tested on Hive 0.13.1)
-* RHEL 6, CentOS 6, Scientific Linux 6: Cloudera distribution (tested with Hadoop 2.6.0)
+* **Fedora 21**: only hive and hcatalog clients, native packages (tested on Hive 0.12.0)
+* **Debian 7/wheezy**: Cloudera distribution (tested on Hive 0.13.1)
+* **RHEL 6 and clones**: Cloudera distribution (tested with Hadoop 2.6.0)
+
+Puppet 3.x is required.
 
 <a name="setup"></a>
 ##Setup
@@ -64,7 +60,7 @@ There are several known or intended limitations in this module.
 
 Be aware of:
 
-* **Repositories** - see cesnet-hadoop module Setup Requirements for details
+* **Repositories** - see *cesnet-hadoop* module Setup Requirements for details
 
 * **No inter-node dependencies**: running HDFS namenode is required for Hive metastore server startup
 
@@ -72,12 +68,12 @@ Be aware of:
 
 * **Database setup not handled here**: basic database setup and database creation needs to be handled externally; tested are puppetlabs-mysql and puppetlabs-postgresql modules (see examples), but it is not limited to these modules
 
-* **Hadoop**: it should be configured locally or you should use *hdfs\_hostname* parameter (see [Module Parameters](#parameters))
+* **Hadoop**: it should be configured locally or you should use *hdfs\_hostname* parameter (see [Module Parameters](#class-hive))
 
 <a name="beginning-with-hive"></a>
 ###Beginning with Hive
 
-Let's start with brief examples.
+Let's start with basic examples.
 
 **Example**: The simplest setup without security nor zookeeper, with everything on single machine:
 
@@ -290,82 +286,98 @@ For example (using mysql, from Hive 0.13.0):
 <a name="classes"></a>
 ###Classes
 
-* **hbase** - Client Support for HBase
-* **hdfs** - HDFS initialiations
-* init
-* params
-* service
+* [**`hive`**](#class-hive): The main configuration class for Apache Hive
+* **`hive::hbase`**: Client Support for HBase
+* **`hive::hdfs`**: HDFS initialiations
+* `hive::params`
+* `hive::service`
 * common:
- * config
- * daemon
- * postinstall
-* **frontend** - Client
- * config
- * install
-* **hcatalog** - HCatalog Client
- * config
- * install
-* **metastore** - Metastore
- * config
- * install
- * service
-* **server2** - Server2
- * config
- * install
- * service
-* user
+ * `hive::common::config`
+ * `hive::common::daemon`
+ * `hive::common::postinstall`
+* **`hive::frontend`**: Hive Client
+ * `hive::frontend::config`
+ * `hive::frontend::install`
+* **`hive::hcatalog`**: Hive HCatalog Client
+ * `hive::hcatalog::config`
+ * `hive::hcatalog::install`
+* **`hive::metastore`**: Hive Metastore
+ * `hive::metastore::config`
+ * `hive::metastore::install`
+ * `hive::metastore::service`
+* **`hive::server2`**: Hive Server
+ * `hive::server2::config`
+ * `hive::server2::install`
+ * `hive::server2::service`
+* **`hive::user`**: Create hive system user, if needed
 
-<a name="parameters"></a>
-###Module Parameters
+<a name="class-hive"></a>
+###`hive` class
 
-####`group` 'users'
+####`group`
 
-Group where all users belong. It is not updated when changed, you should remove the /var/lib/hadoop-hdfs/.puppet-hive-dir-created file when changing or update group of /user/hive on HDFS.
+Group where all users belong. Default: 'users'.
 
-####`hdfs_hostname` undef
+It is not updated when changed, you should remove the /var/lib/hadoop-hdfs/.puppet-hive-dir-created file when changing or update group of /user/hive on HDFS.
 
-HDFS hostname (or defaultFS value), if different from core-site.xml Hadoop file. It is recommended to have the *core-site.xml* file instead. *core-site.xml* will be created when installing any Hadoop component or if you include *hadoop::common::config* class.
+####`hdfs_hostname`
 
-####`metastore_hostname` undef
+HDFS hostname (or defaultFS value), if different from core-site.xml Hadoop file. Default: undef.
 
-Hostname of the metastore server. When specified, remote mode is activated (recommended).
+It is recommended to have the *core-site.xml* file instead. *core-site.xml* will be created when installing any Hadoop component or if you include *hadoop::common::config* class.
 
-####`server2_hostname` undef
+####`metastore_hostname`
 
-Hostname of the Hive server. Used only for hivemanager script.
+Hostname of the metastore server. Default: undef.
 
-####`zookeeper_hostnames` undef
+When specified, remote mode is activated (recommended).
 
-Array of zookeeper hostnames quorum. Used for lock management (recommended).
+####`server2_hostname`
 
-####`zookeeper_port` undef
+Hostname of the Hive server. Default: undef.
 
-Zookeeper port, if different from the default (2181).
+Used only for hivemanager script.
 
-####`realm` undef
+####`zookeeper_hostnames`
 
-Kerberos realm. Use empty string if Kerberos is not used.
+Array of zookeeper hostnames quorum. Default: undef.
 
-When security is enabled, you may also need to add these properties to Hadoop cluster:
+Used for lock management (recommended).
+
+####`zookeeper_port`
+
+Zookeeper port, if different from the default (2181). Default: undef.
+
+####`realm`
+
+Kerberos realm. Defaukt: undef.
+
+Use empty string if Kerberos is not used.
+
+When security is enabled, you also need to add these properties to Hadoop cluster:
 
 * hadoop.proxyuser.hive.groups => 'hadoop,users' (where 'users' is the group in *group* parameter)
 * hadoop.proxyuser.hive.hosts => '\*'
 
-####`properties` undef
+####`properties`
 
-Additional properties.
+Additional properties. Default: undef.
 
-####`descriptions` undef
+####`descriptions`
 
-Descriptions for the additional properties.
+Descriptions for the additional properties. Default: undef.
 
-####`alternatives` 'cluster' or undef
+####`alternatives`
 
-Use alternatives to switch configuration. Use it only when supported (like with Cloudera for example).
+Use alternatives to switch configuration. Default: 'cluster' or undef.
 
-####`db` undef
+Use it only when supported (like with Cloudera for example).
 
-Database behind the metastore. The default is embeded database (*derby*), but it is recommended to use proper database.
+####`db`
+
+Database behind the metastore. Default: undef.
+
+The default is embeded database (*derby*), but it is recommended to use proper database.
 
 Values:
 
@@ -373,39 +385,47 @@ Values:
 * *mysql*: MySQL/MariaDB,
 * *postgresql*: PostgreSQL
 
-####`db_host` 'localhost'
+####`db_host`
 
-Database hostname for *mysql*, *postgresql*, and *oracle*'. Can be overriden by *javax.jdo.option.ConnectionURL* property.
+Database hostname for *mysql*, *postgresql*, and *oracle*'. Default: 'localhost'.
 
-####`db_name` 'metastore'
+It can be overriden by *javax.jdo.option.ConnectionURL* property.
 
-Database name for *mysql* and *postgresql*. For *oracle* 'xe' schema is used. Can be overriden by *javax.jdo.option.ConnectionURL* property.
+####`db_name`
 
-####`db_user` 'hive'
+Database name for *mysql* and *postgresql*. Default: 'metastore'.
 
-Database user for *mysql*, *postgresql*, and *oracle*.
+For *oracle* 'xe' schema is used. Can be overriden by *javax.jdo.option.ConnectionURL* property.
 
-####`db_password` undef
+####`db_user`
 
-Database password for *mysql*, *postgresql*, and *oracle*.
+Database user for *mysql*, *postgresql*, and *oracle*. Default: 'hive'.
 
-####`features` {}
+####`db_password`
 
-Enable additional features:
+Database password for *mysql*, *postgresql*, and *oracle*. Default: undef.
 
-* manager - script in /usr/local to start/stop Hive daemons relevant for given node
+####`features`
+
+Enable additional features. Default: {}.
+
+Values:
+
+* **manager** - script in /usr/local to start/stop Hive daemons relevant for given node
 
 
 <a name="limitations"></a>
 ##Limitations
 
-Idea in this module is to do only one thing - setup Hive SW - and don't limit generic usage of this module by doing other stuff. You can have your own repository with Hadoop SW, you can use this module just by *puppet apply*. You can select which Kerberos implementation, Java version, or database puppet module to use.
+Idea in this module is to do only one thing - setup Hive SW - and not limit generic usage of this module by doing other stuff. You can have your own repository with Hadoop SW, you can select which Kerberos implementation, Java version, or database puppet module to use.
 
-On other hand this leads to some limitations as mentioned in [Setup Requirements](#setup-requirements) section and you may need site-specific puppet module together with this one.
+On other hand this leads to some limitations as mentioned in [Setup Requirements](#setup-requirements) section and usage is more complicated - you may need site-specific puppet module together with this one.
 
 <a name="development"></a>
 ##Development
 
 * Repository: [https://github.com/MetaCenterCloudPuppet/cesnet-hive](https://github.com/MetaCenterCloudPuppet/cesnet-hive)
-* Testing: [https://github.com/MetaCenterCloudPuppet/hadoop-tests](https://github.com/MetaCenterCloudPuppet/hadoop-tests)
+* Tests:
+ * basic: see *.travis.yml*
+ * vagrant: [https://github.com/MetaCenterCloudPuppet/hadoop-tests](https://github.com/MetaCenterCloudPuppet/hadoop-tests)
 * Email: František Dvořák &lt;valtri@civ.zcu.cz&gt;
