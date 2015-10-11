@@ -241,7 +241,7 @@ Multihome is supported by Hive out-of-the-box.
 <a name="multinn"></a>
 ###Cluster with more HDFS Name nodes
 
-If there are used more HDFS namenodes in the Hadoop cluster (high availability, namespaces, ...), it is needed to have 'hive' system user on all of them to autorization work properly. You could install full Hive client (using *hive::frontend::install*), but just creating the user is enough (using *hive::user*).
+If there are used more HDFS namenodes in the Hadoop cluster (high availability, namespaces, ...), it is needed to have 'hive' system user on all of them to authorization work properly. You could install full Hive client (using *hive::frontend::install*), but just creating the user is enough (using *hive::user*).
 
 Note, the *hive::hdfs* class must be used too, but only on one of the HDFS namenodes. It includes the *hive::user*.
 
@@ -259,7 +259,7 @@ Note, the *hive::hdfs* class must be used too, but only on one of the HDFS namen
 <a name="upgrade"></a>
 ###Upgrade
 
-The best way is to refresh configrations from the new original (=remove the old) and relaunch puppet on top of it. There is also needed to update schema using *schematool* or upgrade scripts in */usr/lib/hive/scripts/metastore/upgrade/DATABASE/*.
+The best way is to refresh configurations from the new original (=remove the old) and relaunch puppet on top of it. There is also needed to update schema using *schematool* or upgrade scripts in */usr/lib/hive/scripts/metastore/upgrade/DATABASE/*.
 
 For example (using mysql, from Hive 0.13.0):
 
@@ -350,7 +350,7 @@ Zookeeper port, if different from the default (2181). Default: undef.
 
 ####`realm`
 
-Kerberos realm. Defaukt: undef.
+Kerberos realm. Default: undef.
 
 Use empty string if Kerberos is not used.
 
@@ -377,11 +377,11 @@ Use it only when supported (like with Cloudera for example).
 
 Database behind the metastore. Default: undef.
 
-The default is embeded database (*derby*), but it is recommended to use proper database.
+The default is embedded database (*derby*), but it is recommended to use proper database.
 
 Values:
 
-* *derby* (default): embeded database
+* *derby* (default): embedded database
 * *mysql*: MySQL/MariaDB,
 * *postgresql*: PostgreSQL
 
@@ -389,13 +389,13 @@ Values:
 
 Database hostname for *mysql*, *postgresql*, and *oracle*'. Default: 'localhost'.
 
-It can be overriden by *javax.jdo.option.ConnectionURL* property.
+It can be overridden by *javax.jdo.option.ConnectionURL* property.
 
 ####`db_name`
 
 Database name for *mysql* and *postgresql*. Default: 'metastore'.
 
-For *oracle* 'xe' schema is used. Can be overriden by *javax.jdo.option.ConnectionURL* property.
+For *oracle* 'xe' schema is used. Can be overridden by *javax.jdo.option.ConnectionURL* property.
 
 ####`db_user`
 
