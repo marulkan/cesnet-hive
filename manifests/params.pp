@@ -31,13 +31,6 @@ class hive::params {
     }
   }
 
-  $alternatives = "${::osfamily}-${::operatingsystem}" ? {
-    /Fedora-RedHat/ => undef,
-    # let's disable alternatives for now:
-    # https://github.com/puppet-community/puppet-alternatives/issues/18
-    /RedHat/        => undef,
-    /Debian/        => 'cluster',
-  }
   $confdir = "${::osfamily}-${::operatingsystem}" ? {
     /Fedora-RedHat/ => '/etc/hive',
     /Debian|RedHat/ => '/etc/hive/conf',

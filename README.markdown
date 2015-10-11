@@ -369,7 +369,7 @@ Descriptions for the additional properties. Default: undef.
 
 ####`alternatives`
 
-Use alternatives to switch configuration. Default: 'cluster' or undef.
+Switches the alternatives used for the configuration. Default: 'cluster' (Debian) or undef.
 
 Use it only when supported (like with Cloudera for example).
 

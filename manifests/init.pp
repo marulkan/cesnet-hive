@@ -12,7 +12,7 @@ class hive (
   $realm,
   $properties = undef,
   $descriptions = undef,
-  $alternatives = $hive::params::alternatives,
+  $alternatives = '::default',
   $db = undef,
   $db_host = $hive::params::db_host,
   $db_user = $hive::params::db_user,
