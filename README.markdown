@@ -81,8 +81,6 @@ Let's start with basic examples.
       hdfs_hostname => $::fqdn,
       metastore_hostname => $::fqdn,
       server2_hostname => $::fqdn,
-      # security needs to be disabled explicitly by using empty string
-      realm => '',
     }
 
     node <HDFS_NAMENODE> {
@@ -371,7 +369,7 @@ Descriptions for the additional properties. Default: undef.
 
 Switches the alternatives used for the configuration. Default: 'cluster' (Debian) or undef.
 
-Use it only when supported (like with Cloudera for example).
+Use it only when supported (for example with Cloudera distribution).
 
 ####`db`
 
@@ -387,7 +385,7 @@ Values:
 
 ####`db_host`
 
-Database hostname for *mysql*, *postgresql*, and *oracle*'. Default: 'localhost'.
+Database hostname for *mysql*, *postgresql*, and *oracle*. Default: 'localhost'.
 
 It can be overridden by *javax.jdo.option.ConnectionURL* property.
 
