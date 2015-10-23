@@ -39,5 +39,4 @@ class hive::params {
   $db_user = 'hive'
   $db_host = 'localhost'
   $port = 9083
-  $group = 'users'
 }

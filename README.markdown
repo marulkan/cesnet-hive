@@ -230,6 +230,8 @@ Following parameters are used for security (see also hive class):
   * installed Kerberos client (Debian: krb5-user/heimdal-clients; RedHat: krb5-workstation)
   * configured Kerberos client (*/etc/krb5.conf*, */etc/krb5.keytab*)
   * */etc/security/keytab/hive.service.keytab* (on all server nodes)
+* *sentry_hostname*
+  Enable usage of Sentry authorization service. When not specified, Hive server2 impersonation is enabled and authorization works using HDFS permissions.
 
 <a name="multihome"></a>
 ###Multihome Support
@@ -330,6 +332,14 @@ Hostname of the metastore server. Default: undef.
 
 When specified, remote mode is activated (recommended).
 
+####`sentry_hostname`
+
+Hostname of the (external) Sentry service. Default: undef.
+
+Non-empty value will enable Hive settings needed to use Sentry authorization service.
+
+When sentry is enabled, yu will need also *hive* user added to *allowed.system.users* in Hadoop YARN containers.
+
 ####`server2_hostname`
 
 Hostname of the Hive server. Default: undef.
@@ -352,7 +362,7 @@ Kerberos realm. Default: undef.
 
 Use empty string if Kerberos is not used.
 
-When security is enabled, you also need to add these properties to Hadoop cluster:
+When security is enabled, you also need either Sentry service (*sentry_hostname* parameter) or to add these properties to Hadoop cluster:
 
 * hadoop.proxyuser.hive.groups => 'hadoop,users' (where 'users' is the group in *group* parameter)
 * hadoop.proxyuser.hive.hosts => '\*'

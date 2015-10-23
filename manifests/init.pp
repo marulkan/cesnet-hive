@@ -3,9 +3,10 @@
 # The main configuration class for Apache Hive.
 #
 class hive (
-  $group = $hive::params::group,
+  $group = undef,
   $hdfs_hostname = undef,
   $metastore_hostname = undef,
+  $sentry_hostname = undef,
   $server2_hostname = undef,
   $zookeeper_hostnames = undef,
   $zookeeper_port = undef,
@@ -98,24 +99,46 @@ class hive (
   }
 
   if $hive::realm {
-    $sec_properties = {
+    $sec_common_properties = {
       'hive.metastore.sasl.enabled' => true,
       'hive.metastore.kerberos.keytab.file' => '/etc/security/keytab/hive.service.keytab',
       'hive.metastore.kerberos.principal' => "hive/_HOST@${hive::realm}",
-      'hive.metastore.pre.event.listeners' => 'org.apache.hadoop.hive.ql.security.authorization.AuthorizationPreEventListener',
-      'hive.security.metastore.authorization.manager' => 'org.apache.hadoop.hive.ql.security.authorization.StorageBasedAuthorizationProvider',
       'hive.security.metastore.authenticator.manager' => 'org.apache.hadoop.hive.ql.security.HadoopDefaultMetastoreAuthenticator',
       'hive.server2.authentication' => 'KERBEROS',
       'hive.server2.authentication.kerberos.principal' => "hive/_HOST@${hive::realm}",
       'hive.server2.authentication.kerberos.keytab' => '/etc/security/keytab/hive.service.keytab',
-      'hive.server2.enable.impersonation' => true,
       'hive.server2.thrift.sasl.qop' => 'auth',
     }
+    if $hive::sentry_hostname {
+      $_group = pick($group, 'hive')
+      $_warehouse_mode = '0751'
+      $sec_impersonation_properties = {}
+      $sec_sentry_properties = {
+        'hive.metastore.filter.hook' => 'org.apache.sentry.binding.metastore.SentryMetaStoreFilterHook',
+        'hive.metastore.event.listeners' => 'org.apache.sentry.binding.metastore.SentryMetastorePostEventListener',
+        'hive.metastore.pre.event.listeners' => 'org.apache.sentry.binding.metastore.MetastoreAuthzBinding',
+        'hive.security.authorization.task.factory' => 'org.apache.sentry.binding.hive.SentryHiveAuthorizationTaskFactoryImpl',
+        'hive.server2.enable.impersonation' => false,
+        'hive.server2.session.hook' => 'org.apache.sentry.binding.hive.HiveAuthzBindingSessionHook',
+        'hive.sentry.conf.url' => 'file:///etc/sentry/conf/sentry-site.xml',
+      }
+    } else {
+      $_group = pick($group, 'users')
+      $_warehouse_mode = '0755'
+      $sec_impersonation_properties = {
+        'hive.metastore.pre.event.listeners' => 'org.apache.hadoop.hive.ql.security.authorization.AuthorizationPreEventListener',
+        'hive.security.metastore.authorization.manager' => 'org.apache.hadoop.hive.ql.security.authorization.StorageBasedAuthorizationProvider',
+        'hive.server2.enable.impersonation' => true,
+      }
+      $sec_sentry_properties = {}
+    }
+    $sec_properties = merge($sec_common_properties, $sec_impersonation_properties, $sec_sentry_properties)
   }
 
   $dyn_descriptions = {
       'javax.jdo.option.ConnectionURL' => 'JDBC connect string for a JDBC metastore',
       'javax.jdo.option.ConnectionDriverName' => 'Driver class name for a JDBC metastore',
+      'hive.metastore.event.listeners' => 'turn on metastore-side authorization security (post events)',
       'hive.metastore.pre.event.listeners' => 'turn on metastore-side authorization security',
       'hive.security.metastore.authorization.manager' => 'recommended is the HDFS permissions-based model: StorageBasedAuthorizationProvider',
       'hive.security.metastore.authenticator.manager' => 'just magic from https://cwiki.apache.org/confluence/display/Hive/Storage+Based+Authorization+in+the+Metastore+Server',
