@@ -98,7 +98,7 @@ class hive (
     notice('zookeeper quorum, not specified, recommended for locking')
   }
 
-  if $hive::realm {
+  if $hive::realm and $hive::realm != '' {
     $sec_common_properties = {
       'hive.metastore.sasl.enabled' => true,
       'hive.metastore.kerberos.keytab.file' => '/etc/security/keytab/hive.service.keytab',
@@ -109,31 +109,31 @@ class hive (
       'hive.server2.authentication.kerberos.keytab' => '/etc/security/keytab/hive.service.keytab',
       'hive.server2.thrift.sasl.qop' => 'auth',
     }
-    if $hive::sentry_hostname {
-      $_group = pick($group, 'hive')
-      $_warehouse_mode = '0751'
-      $sec_impersonation_properties = {}
-      $sec_sentry_properties = {
-        'hive.metastore.filter.hook' => 'org.apache.sentry.binding.metastore.SentryMetaStoreFilterHook',
-        'hive.metastore.event.listeners' => 'org.apache.sentry.binding.metastore.SentryMetastorePostEventListener',
-        'hive.metastore.pre.event.listeners' => 'org.apache.sentry.binding.metastore.MetastoreAuthzBinding',
-        'hive.security.authorization.task.factory' => 'org.apache.sentry.binding.hive.SentryHiveAuthorizationTaskFactoryImpl',
-        'hive.server2.enable.impersonation' => false,
-        'hive.server2.session.hook' => 'org.apache.sentry.binding.hive.HiveAuthzBindingSessionHook',
-        'hive.sentry.conf.url' => 'file:///etc/sentry/conf/sentry-site.xml',
-      }
-    } else {
-      $_group = pick($group, 'users')
-      $_warehouse_mode = '0755'
-      $sec_impersonation_properties = {
-        'hive.metastore.pre.event.listeners' => 'org.apache.hadoop.hive.ql.security.authorization.AuthorizationPreEventListener',
-        'hive.security.metastore.authorization.manager' => 'org.apache.hadoop.hive.ql.security.authorization.StorageBasedAuthorizationProvider',
-        'hive.server2.enable.impersonation' => true,
-      }
-      $sec_sentry_properties = {}
-    }
-    $sec_properties = merge($sec_common_properties, $sec_impersonation_properties, $sec_sentry_properties)
   }
+  if $hive::realm and $hive::realm != '' and $hive::sentry_hostname {
+    $_group = pick($group, 'hive')
+    $_warehouse_mode = '0751'
+    $sec_impersonation_properties = {}
+    $sec_sentry_properties = {
+      'hive.metastore.filter.hook' => 'org.apache.sentry.binding.metastore.SentryMetaStoreFilterHook',
+      'hive.metastore.event.listeners' => 'org.apache.sentry.binding.metastore.SentryMetastorePostEventListener',
+      'hive.metastore.pre.event.listeners' => 'org.apache.sentry.binding.metastore.MetastoreAuthzBinding',
+      'hive.security.authorization.task.factory' => 'org.apache.sentry.binding.hive.SentryHiveAuthorizationTaskFactoryImpl',
+      'hive.server2.enable.impersonation' => false,
+      'hive.server2.session.hook' => 'org.apache.sentry.binding.hive.HiveAuthzBindingSessionHook',
+      'hive.sentry.conf.url' => 'file:///etc/sentry/conf/sentry-site.xml',
+    }
+  } else {
+    $_group = pick($group, 'users')
+    $_warehouse_mode = '0755'
+    $sec_impersonation_properties = {
+      'hive.metastore.pre.event.listeners' => 'org.apache.hadoop.hive.ql.security.authorization.AuthorizationPreEventListener',
+      'hive.security.metastore.authorization.manager' => 'org.apache.hadoop.hive.ql.security.authorization.StorageBasedAuthorizationProvider',
+      'hive.server2.enable.impersonation' => true,
+    }
+    $sec_sentry_properties = {}
+  }
+  $sec_properties = merge($sec_common_properties, $sec_impersonation_properties, $sec_sentry_properties)
 
   $dyn_descriptions = {
       'javax.jdo.option.ConnectionURL' => 'JDBC connect string for a JDBC metastore',
