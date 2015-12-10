@@ -233,6 +233,28 @@ Following parameters are used for security (see also hive class):
 * *sentry_hostname*
   Enable usage of Sentry authorization service. When not specified, Hive server2 impersonation is enabled and authorization works using HDFS permissions.
 
+####Impersonation
+
+Authorization by impersonation of the user. Used when *sentry\_hostname* is not specified.
+
+Hadoop needs to have enabled proxyuser for it:
+
+    # 'users' is the group in *group* parameter
+    hadoop.proxyuser.hive.groups => 'hive,users'
+    hadoop.proxyuser.hive.hosts  => '*'
+
+Users need to have access to warehouse directory. Group is set to *users* by default. Other addons (like impala) need to be in the *users* group too!
+
+Another way could be to add users to *hive* group and use that group instead (more simple, but less secure).
+
+####Sentry
+
+Authorization by sentry. Used when *sentry\_hostname* is not specified.
+
+Hive itself runs under 'hive' user. Hadoop and Hive must have enabed security.
+
+Warehouse directory must have 'hive' group ownership. It is set by the puppet module by default.
+
 <a name="multihome"></a>
 ###Multihome Support
 
@@ -362,10 +384,7 @@ Kerberos realm. Default: undef.
 
 Use empty string if Kerberos is not used.
 
-When security is enabled, you also need either Sentry service (*sentry_hostname* parameter) or to add these properties to Hadoop cluster:
-
-* hadoop.proxyuser.hive.groups => 'hadoop,users' (where 'users' is the group in *group* parameter)
-* hadoop.proxyuser.hive.hosts => '\*'
+When security is enabled, you also need either Sentry service (*sentry_hostname* parameter) or proxyuser properties to Hadoop cluster for Hive impersonation. See [Enable Security](#security).
 
 ####`properties`
 
