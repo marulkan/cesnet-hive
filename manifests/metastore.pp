@@ -3,9 +3,9 @@
 # Hive Metastore.
 #
 class hive::metastore {
-  include 'hive::metastore::install'
-  include 'hive::metastore::config'
-  include 'hive::metastore::service'
+  include ::hive::metastore::install
+  include ::hive::metastore::config
+  include ::hive::metastore::service
 
   Class['hive::metastore::install'] ->
   Class['hive::metastore::config'] ~>

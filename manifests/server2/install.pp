@@ -3,7 +3,7 @@
 # Installation of Hive server2 service.
 #
 class hive::server2::install {
-  include stdlib
+  include ::stdlib
   contain hive::common::postinstall
 
   ensure_packages($hive::packages['server'])

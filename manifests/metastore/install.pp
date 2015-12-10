@@ -3,7 +3,7 @@
 # Installation of Hive metastore service.
 #
 class hive::metastore::install {
-  include stdlib
+  include ::stdlib
   contain hive::common::postinstall
 
   ensure_packages($hive::packages['metastore'])

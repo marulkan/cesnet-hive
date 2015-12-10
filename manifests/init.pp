@@ -21,7 +21,7 @@ class hive (
   $db_password = undef,
   $features = {},
 ) inherits hive::params {
-  include stdlib
+  include ::stdlib
 
   if $metastore_hostname == $::fqdn {
     case $db {
@@ -86,7 +86,7 @@ class hive (
   if $zookeeper_hostnames {
     $zoo_properties1 = {
       'hive.support.concurrency' => true,
-      'hive.zookeeper.quorum' => join($zookeeper_hostnames, ',')
+      'hive.zookeeper.quorum' => join($zookeeper_hostnames, ','),
     }
     if $zookeeper_port {
       $zoo_properties2 = {

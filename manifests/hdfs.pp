@@ -5,7 +5,7 @@
 # This class is needed to be launched on HDFS namenode. With some limitations it can be launched on any Hadoop node (user hive created or hive installed on namenode, kerberos ticket available on the local node).
 #
 class hive::hdfs {
-  include hive::user
+  include ::hive::user
 
   $touchfile = 'hive-dir-created'
   hadoop::kinit { 'hive-kinit':

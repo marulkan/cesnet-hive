@@ -4,6 +4,6 @@
 #
 class hive::common::postinstall {
   ::hadoop_lib::postinstall{ 'hive':
-    alternatives => $::hive::alternatives
+    alternatives => $::hive::alternatives,
   }
 }
