@@ -338,7 +338,9 @@ For example (using mysql, from Hive 0.13.0):
 
 ####`group`
 
-Group where all users belong. Default: 'users'.
+Hive group on HDFS. Default: 'users' (without sentry), 'hive' (with sentry).
+
+For Hive impersonation (without sentry) is expected all users belong to the specified group.
 
 It is not updated when changed, you should remove the /var/lib/hadoop-hdfs/.puppet-hive-dir-created file when changing or update group of /user/hive on HDFS.
 
