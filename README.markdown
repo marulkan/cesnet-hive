@@ -12,6 +12,7 @@
 3. [Usage - Configuration options and additional functionality](#usage)
     * [Enable Security](#security)
     * [Multihome Support](#multihome)
+    * [Changing defaultFS (converting non-HA cluster, ...)](#defaultfs)
     * [Cluster with more HDFS Name nodes](#multinn)
     * [Upgrade](#upgrade)
 4. [Reference - An under-the-hood peek at what the module is doing and how](#reference)
@@ -259,6 +260,27 @@ Warehouse directory must have 'hive' group ownership. It is set by the puppet mo
 ###Multihome Support
 
 Multihome is supported by Hive out-of-the-box.
+
+<a name="defaultfs"</a>
+###Changing defaultFS (converting non-HA cluster, ...)
+
+Changing defaultFS can be needed when, for example:
+
+* changing Hadoop cluster name
+* using cluster name because of converting non-HA cluster to High Availability
+
+But existing objects in Hive schema are using the old URL with previous defaultFS and needs to be converted.
+
+**Getting the old URL**:
+
+    hive --service metatool -listFSRoot 2>/dev/null
+
+**Convert** (you can try testing run first using *--dryRun*):
+
+    OLD_URL="hdfs://NAMENODE_HOSTNAME:8020"
+    NEW_URL="hdfs://CLUSTER_NAME"
+    hive --service metatool -updateLocation ${NEW_URL} ${OLD_URL} --dryRun
+    hive --service metatool -updateLocation ${NEW_URL} ${OLD_URL}
 
 <a name="multinn"></a>
 ###Cluster with more HDFS Name nodes
