@@ -153,20 +153,31 @@ Add this to the initial example:
       class { 'mysql::server':
         root_password  => 'strongpassword',
       }
-    
+
+      # proper schema file is needed (hive-schema-0.13.0.mysql.sql, ...)
+      # (there is also bug HIVE-6559)
+      $hive_path='/usr/lib/hive/scripts/metastore/upgrade/mysql'
+      $hive_schema='hive-schema-1.1.0.mysql.sql'
+
+      Class['hive::metastore::install']
+      ->
+      exec{ 'hive-bug':
+        command => "sed -i ${hive_path}/${hive_schema} -e 's,^SOURCE hive,SOURCE ${hive_path}/hive,'",
+        unless  => "grep 'SOURCE ${hive_path}' ${hive_path}/${hive_schema}",
+        path    => '/sbin:/usr/sbin:/bin:/usr/bin',
+      }
+      ->
       mysql::db { 'metastore':
         user     => 'hive',
         password => 'hivepassword',
-        host     => 'localhost',
         grant    => ['SELECT', 'INSERT', 'UPDATE', 'DELETE'],
-        sql      => '/usr/lib/hive/scripts/metastore/upgrade/mysql/hive-schema-0.13.0.mysql.sql',
+        sql      => "${hive_path}/${hive_schema}",
       }
     
       class { 'mysql::bindings':
         java_enable => true,
       }
     
-      Class['hive::metastore::install'] -> Mysql::Db['metastore']
       Mysql::Db['metastore'] -> Class['hive::metastore::service']
       Class['mysql::bindings'] -> Class['hive::metastore::config']
     }
