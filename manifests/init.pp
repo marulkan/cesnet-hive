@@ -10,7 +10,7 @@ class hive (
   $server2_hostname = undef,
   $zookeeper_hostnames = undef,
   $zookeeper_port = undef,
-  $realm,
+  $realm = '',
   $properties = undef,
   $descriptions = undef,
   $alternatives = '::default',

@@ -65,7 +65,7 @@ Be aware of:
 
 * **No inter-node dependencies**: running HDFS namenode is required for Hive metastore server startup
 
-* **Secure mode**: keytabs must be prepared in /etc/security/keytabs/ (see *realm* parameter)
+* **Secure mode**: keytabs must be prepared in */etc/security/keytabs/* (see *realm* parameter)
 
 * **Database setup not handled here**: basic database setup and database creation needs to be handled externally; tested are puppetlabs-mysql and puppetlabs-postgresql modules (see examples), but it is not limited to these modules
 
@@ -236,8 +236,8 @@ Security in Hadoop (and Hive) is based on Kerberos. Keytab files needs to be pre
 
 Following parameters are used for security (see also hive class):
 
-* *realm* (required parameter, empty string disables the security)<br />
-  Enable security and Kerberos realm to use. Empty string disables the security.
+* *realm* (Kerberos realm, empty string disables the security)<br />
+  Enables security and specifies Kerberos realm to use. Empty string disables the security.
   To enable security, there are required:
   * installed Kerberos client (Debian: krb5-user/heimdal-clients; RedHat: krb5-workstation)
   * configured Kerberos client (*/etc/krb5.conf*, */etc/krb5.keytab*)
@@ -415,9 +415,9 @@ Zookeeper port, if different from the default (2181). Default: undef.
 
 ####`realm`
 
-Kerberos realm. Default: undef.
+Kerberos realm. Default: ''.
 
-Use empty string if Kerberos is not used.
+Empty string disables the security.
 
 When security is enabled, you also need either Sentry service (*sentry_hostname* parameter) or proxyuser properties to Hadoop cluster for Hive impersonation. See [Enable Security](#security).
 
