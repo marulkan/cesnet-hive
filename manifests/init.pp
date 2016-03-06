@@ -65,10 +65,14 @@ class hive (
         }
       }
     }
+  } else {
+    $db_properties = {}
   }
 
   if $hdfs_hostname {
     $metastore_uri = "hdfs://${hive::hdfs_hostname}"
+  } else {
+    $metastore_uri = ''
   }
   $dyn_properties = {
     'datanucleus.autoStartMechanism' => 'SchemaTable',
@@ -81,6 +85,8 @@ class hive (
     $remote_properties = {
       'hive.metastore.uris' => "thrift://${hive::metastore_hostname}:${hive::port}",
     }
+  } else {
+    $remote_properties = {}
   }
 
   if $zookeeper_hostnames {
@@ -95,6 +101,7 @@ class hive (
     }
     $zoo_properties = merge($zoo_properties1, $zoo_properties2)
   } else {
+    $zoo_properties = {}
     notice('zookeeper quorum, not specified, recommended for locking')
   }
 
@@ -109,6 +116,8 @@ class hive (
       'hive.server2.authentication.kerberos.keytab' => '/etc/security/keytab/hive.service.keytab',
       'hive.server2.thrift.sasl.qop' => 'auth',
     }
+  } else {
+    $sec_common_properties = {}
   }
   if $hive::realm and $hive::realm != '' and $hive::sentry_hostname {
     $_group = pick($group, 'hive')
