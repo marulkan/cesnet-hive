@@ -20,6 +20,7 @@ class hive::params {
         server => 'hive-server2',
         hcatalog => 'hive-hcatalog',
         hbase => 'hive-hbase',
+        worker => 'hive-jdbc',
       }
       $daemons = {
         metastore => 'hive-metastore',

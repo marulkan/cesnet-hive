@@ -365,6 +365,7 @@ For example (using mysql, from Hive 0.13.0):
  * `hive::server2::install`
  * `hive::server2::service`
 * **`hive::user`**: Create hive system user, if needed
+* **`hive::worker`**: Hive support at the worker node.
 
 <a name="class-hive"></a>
 ###`hive` class
