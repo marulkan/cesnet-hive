@@ -24,15 +24,13 @@
 <a name="module-description"></a>
 ##Module Description
 
-This module installs and setups Apache Hive data warehouse software running on the top of Hadoop cluster. Hive services can be collocated or separated in the cluster. Optionally security based on Kerberos can be enabled. Security should be enabled if Hadoop cluster security is enabled.
+This module installs and setups Apache Hive data warehouse software running on the top of Hadoop cluster. Hive services can be collocated or separated with other services in the cluster. Optionally security based on Kerberos can be enabled. Security should be enabled if Hadoop cluster security is enabled.
 
 Supported are:
 
-* **Fedora 21**: only hive and hcatalog clients, native packages (tested on Hive 0.12.0)
+* **Fedora**: only hive and hcatalog clients, native packages (tested on Hive 0.12.0)
 * **Debian 7/wheezy**: Cloudera distribution (tested on Hive 0.13.1)
 * **RHEL 6 and clones**: Cloudera distribution (tested with Hadoop 2.6.0)
-
-Puppet 3.x is required.
 
 <a name="setup"></a>
 ##Setup
@@ -92,11 +90,13 @@ Let's start with basic examples.
 
     node default {
       # server
-      include hive::metastore
-      include hive::server2
+      include ::hive::metastore
+      include ::hive::server2
       # client
-      include hive::frontend
-      include hive::hcatalog
+      include ::hive::frontend
+      include ::hive::hcatalog
+      # worker nodes
+      include ::hive::worker
     }
 
 Modify *$::fqdn* and node(s) section as needed.
@@ -112,8 +112,9 @@ We recommend:
 
 It is highly recommended to use real database backends instead of Derby. Also security can be enabled.
 
-See the examples:
+Hive is used together with other components in *roles* in [*cesnet::site\_hadoop*](https://forge.puppetlabs.com/cesnet/site_hadoop) puppet module.
 
+Or you can see the examples here, how to use the hive puppet module directly:
 
 **Example 1**: Setup with security:
 
@@ -365,7 +366,7 @@ For example (using mysql, from Hive 0.13.0):
  * `hive::server2::install`
  * `hive::server2::service`
 * **`hive::user`**: Create hive system user, if needed
-* **`hive::worker`**: Hive support at the worker node.
+* **`hive::worker`**: Hive support at the worker node
 
 <a name="class-hive"></a>
 ###`hive` class
@@ -482,7 +483,7 @@ Values:
 
 Idea in this module is to do only one thing - setup Hive SW - and not limit generic usage of this module by doing other stuff. You can have your own repository with Hadoop SW, you can select which Kerberos implementation, Java version, or database puppet module to use.
 
-On other hand this leads to some limitations as mentioned in [Setup Requirements](#setup-requirements) section and usage is more complicated - you may need site-specific puppet module together with this one.
+On other hand this leads to some limitations as mentioned in [Setup Requirements](#setup-requirements) section and usage is more complicated - you may need site-specific puppet module together with this one, like [cesnet-site\_hadoop](https://forge.puppetlabs.com/cesnet/site_hadoop).
 
 <a name="development"></a>
 ##Development
