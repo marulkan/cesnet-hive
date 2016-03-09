@@ -1,6 +1,6 @@
 {
   "name": "cesnet-hive",
-  "version": "0.10.2",
+  "version": "0.11.0",
   "author": "Frantisek Dvorak <valtri@civ.zcu.cz>",
   "summary": "Apache Hive Puppet Module",
   "license": "MIT",
