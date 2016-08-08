@@ -123,7 +123,7 @@ Additional permissions in Hadoop cluster are needed: add hive proxy user.
     class{"hadoop":
     ...
       properties => {
-        'hadoop.proxyuser.hive.groups' => 'hive,users',
+        'hadoop.proxyuser.hive.groups' => 'hive,impala,oozie,users',
         'hadoop.proxyuser.hive.hosts' => '*',
       },
     ...
