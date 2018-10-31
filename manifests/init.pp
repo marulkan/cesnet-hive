@@ -124,13 +124,11 @@ class hive (
     $_warehouse_mode = '0751'
     $sec_impersonation_properties = {}
     $sec_sentry_properties = {
-      'hive.metastore.filter.hook' => 'org.apache.sentry.binding.metastore.SentryMetaStoreFilterHook',
-      'hive.metastore.event.listeners' => 'org.apache.sentry.binding.metastore.SentryMetastorePostEventListener',
-      'hive.metastore.pre.event.listeners' => 'org.apache.sentry.binding.metastore.MetastoreAuthzBinding',
+      'hive.metastore.pre.event.listeners'       => 'org.apache.sentry.binding.metastore.MetastoreAuthzBinding',
       'hive.security.authorization.task.factory' => 'org.apache.sentry.binding.hive.SentryHiveAuthorizationTaskFactoryImpl',
-      'hive.server2.enable.impersonation' => false,
-      'hive.server2.session.hook' => 'org.apache.sentry.binding.hive.HiveAuthzBindingSessionHook',
-      'hive.sentry.conf.url' => 'file:///etc/sentry/conf/sentry-site.xml',
+      'hive.server2.enable.impersonation'        => false,
+      'hive.sentry.server'                       => 'server1',
+      'hive.sentry.conf.url'                     => 'file:///etc/sentry/conf/sentry-site.xml',
     }
   } else {
     $_group = pick($group, 'users')
