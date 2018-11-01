@@ -124,14 +124,12 @@ class hive (
     $_warehouse_mode = '0751'
     $sec_impersonation_properties = {}
     $sec_sentry_properties = {
+      'hive.server2.enable.doAs'                 => false,
       'hive.security.authorization.task.factory' => 'org.apache.sentry.binding.hive.SentryHiveAuthorizationTaskFactoryImpl',
-      'hive.server2.session.hook'                => 'org.apache.sentry.binding.hive.HiveAuthzBindingSessionHook',
-      'hive.server2.enable.impersonation'        => false,
-      'hive.security.authorization.enabled'      => true,
-      'hive.security.authorization.manager'      => 'org.apache.sentry.binding.hive.SentryAuthorizerFactory',
-      'hive.metastore.rawstore.impl'             => 'org.apache.sentry.binding.metastore.AuthorizingObjectStore',
       'hive.metastore.pre.event.listeners'       => 'org.apache.sentry.binding.metastore.MetastoreAuthzBinding',
-      'hive.sentry.server'                       => 'server1',
+      'hive.server2.session.hook'                => 'org.apache.sentry.binding.hive.HiveAuthzBindingSessionHook',
+      'hive.security.authorization.enabled'      => true,
+      'hive.metastore.rawstore.impl'             => 'org.apache.sentry.binding.metastore.AuthorizingObjectStore',
       'hive.sentry.conf.url'                     => 'file:///etc/sentry/conf/sentry-site.xml',
     }
   } else {
