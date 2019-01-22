@@ -6,11 +6,21 @@ class hive::common::daemon {
   $keytab = '/etc/security/keytab/hive.service.keytab'
 
   if $hive::realm and $hive::realm != '' {
-    file { $keytab:
-      owner => 'hive',
-      group => 'hive',
-      mode  => '0400',
-      alias => 'hive.service.keytab',
+    if $hive::keytab_source and $hive::keytab_source != '' {
+      file { $keytab:
+        owner  => 'hive',
+        group  => 'hive',
+        mode   => '0400',
+        alias  => 'hive.service.keytab',
+        source => $hive::keytab_source,
+      }
+    } else {
+      file { $keytab:
+        owner => 'hive',
+        group => 'hive',
+        mode  => '0400',
+        alias => 'hive.service.keytab',
+      }
     }
   }
 

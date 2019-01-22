@@ -20,6 +20,7 @@ class hive (
   $db_name = $hive::params::db_name,
   $db_password = undef,
   $features = {},
+  $keytab_source = undef,
 ) inherits hive::params {
   include ::stdlib
 
